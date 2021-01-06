@@ -61,6 +61,23 @@ export class AppMiddleware {
   }
 
   /**
+   * Setup Context
+   *
+   * Adds additional data to the koa context
+   */
+
+  public static setupContext(): Middleware {
+    const setupContext = async (ctx: Context, next: Next): Promise<void> => {
+      ctx.data = {}
+      ctx.visionElixir = VisionElixir
+
+      await next()
+    }
+
+    return setupContext
+  }
+
+  /**
    * Init Services
    *
    * Handles running the init function of each registered service

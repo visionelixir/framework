@@ -25,6 +25,7 @@ export default class AppService implements Service {
           AppMiddleware.compress(),
           AppMiddleware.serveStatic(path, config.static),
           AppMiddleware.bodyParser(),
+          AppMiddleware.setupContext(),
         )
       },
     )

@@ -5,8 +5,13 @@ import {
   Request as KoaRequest,
   Response as KoaResponse,
 } from 'koa'
+import { KeyValue } from '../app/types'
+import { VisionElixir } from '../app/lib/VisionElixir'
 
-export type Context = KoaContext
+export type Context = KoaContext & {
+  data: KeyValue
+  visionElixir: VisionElixir
+}
 export type Middleware = KoaMiddleware
 export type Next = KoaNext
 export type Request = KoaRequest

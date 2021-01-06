@@ -26,7 +26,7 @@ export interface VisionElixirConfig {
     directory: string
     require: {
       project: string[]
-      ve: string[]
+      visionElixir: string[]
     }
   }
 }

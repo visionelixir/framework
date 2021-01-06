@@ -15,10 +15,10 @@ export class VisionElixirLoader {
       .get<App>('app')
       .getPerformance()
 
-    require.ve.forEach((service: string) => {
+    require.visionElixir.forEach((service: string) => {
       servicePaths.push({
         name: service,
-        path: `${__dirname}/../../${service}/${file}`,
+        path: `${__dirname}/../../${service}/Service`,
       })
     })
 

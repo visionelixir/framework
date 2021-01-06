@@ -33,7 +33,7 @@ export default class ViewService implements Service {
       return themeDirectory + '/' + theme
     })
 
-    const veServiceViewFolders = config.services.require.ve.map(
+    const veServiceViewFolders = config.services.require.visionElixir.map(
       (service: string) => {
         const directory = Path.normalize(
           `${__dirname}/../${service}/${config.view?.serviceViewDirectory}`,
