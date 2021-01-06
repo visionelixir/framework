@@ -9,6 +9,7 @@
     "url": "git+https://github.com/visionelixir/framework.git"
   },
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest --config=jest.config.json",
     "lint": "eslint ./src --ext ts",
