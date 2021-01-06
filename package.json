@@ -8,6 +8,10 @@
     "type": "git",
     "url": "git+https://github.com/visionelixir/framework.git"
   },
+  "bugs": {
+    "url": "https://github.com/visionelixir/framework/issues"
+  },
+  "homepage": "https://github.com/visionelixir/framework#readme",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -62,9 +66,5 @@
     "ts-jest": "^26.4.4",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
-  },
-  "bugs": {
-    "url": "https://github.com/visionelixir/framework/issues"
-  },
-  "homepage": "https://github.com/visionelixir/framework#readme"
+  }
 }
