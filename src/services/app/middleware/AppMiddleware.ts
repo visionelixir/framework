@@ -68,7 +68,7 @@ export class AppMiddleware {
 
   public static setupContext(): Middleware {
     const setupContext = async (ctx: Context, next: Next): Promise<void> => {
-      ctx.data = {}
+      ctx.data = new Map()
       ctx.visionElixir = VisionElixir
 
       await next()
