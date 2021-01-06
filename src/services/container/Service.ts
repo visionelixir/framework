@@ -5,7 +5,7 @@ import { Service } from '../app/types'
 import { VisionElixirContainer } from './lib/VisionElixirContainer'
 import { Container, Containers } from './types'
 
-export default class CoreService implements Service {
+export default class ContainerService implements Service {
   public globalRegisterEvents(
     emitter: Emitter,
     globalContainer: Container,
