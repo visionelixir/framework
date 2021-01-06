@@ -1,5 +1,5 @@
 import { Service, VisionElixirConfig } from '../app/types'
-import { VisionElixirLogger } from './lib/ElixirLogger'
+import { VisionElixirLogger } from './lib/VisionElixirLogger'
 import { Container } from '../container/types'
 import { LoggingDriver, SERVICE_LOGGER } from './types'
 import { SERVICE_CONFIG } from '../config/types'
