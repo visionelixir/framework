@@ -17,7 +17,11 @@
     "typescript:watch": "tsc --watch",
     "check": "npm run lint && tsc --noEmit",
     "build": "rm -rf dist && npm test && npm run lint && npm run typescript:build",
-    "deploy": "npm run build && npm publish --access=public"
+    "deploy": "npm run build && npm publish --access=public",
+    "git:version:push": "git push --tags && git push origin master",
+    "git:version:patch": "npm run build && npm version patch && npm run git:version:push",
+    "git:version:minor": "npm run build && npm version minor && npm run git:version:push",
+    "git:version:major": "npm run build && npm version major && npm run git:version:push"
   },
   "dependencies": {
     "@google-cloud/logging": "^9.0.0",
