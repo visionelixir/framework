@@ -26,13 +26,13 @@ export class ZoneManager {
     return ZoneManager.zones.get(asyncHooks.executionAsyncId())
   }
 
-  public static set(id: string | number, value: any): ZoneManager {
+  public static set<T>(id: string | number, value: T): ZoneManager {
     ZoneManager.zones.set(id, value)
 
     return ZoneManager
   }
 
-  public static get(id: string | number): any {
+  public static get<T>(id: string | number): T {
     return ZoneManager.zones.get(id)
   }
 

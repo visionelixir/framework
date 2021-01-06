@@ -17,7 +17,7 @@ export class VisionElixirZone implements Zone {
     return z
   }
 
-  public run(cb: () => Promise<void>): any {
+  public run(cb: () => Promise<void>): Promise<void> {
     return cb()
   }
 

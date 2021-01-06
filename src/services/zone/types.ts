@@ -8,13 +8,13 @@ export const SERVICE_ZONE = 'zone'
 
 export interface Zone {
   fork(data: KeyValue): Zone
-  run(cb: () => Promise<void>): any
+  run(cb: () => Promise<void>): Promise<void>
   get<T>(key: string): T
 }
 
 export interface ZoneManager {
   getCurrentZone(): Zone
-  set(id: string | number, value: any): ZoneManager
-  get(id: string | number): any
+  set<T>(id: string | number, value: T): ZoneManager
+  get<T>(id: string | number): T
   delete(id: string | number): ZoneManager
 }

@@ -11,7 +11,8 @@
     "typescript:build": "tsc",
     "typescript:watch": "tsc --watch",
     "check": "npm run lint && tsc --noEmit",
-    "build": "rm -rf dist && npm test && npm run lint && npm run typescript:build"
+    "build": "rm -rf dist && npm test && npm run lint && npm run typescript:build",
+    "deploy": "npm run build && npm publish"
   },
   "dependencies": {
     "@google-cloud/logging": "^9.0.0",

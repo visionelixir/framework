@@ -15,6 +15,7 @@ export class Core extends Koa {
   protected container: Container
   protected app: App
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
   constructor(options: any) {
     super()
 
@@ -22,6 +23,7 @@ export class Core extends Koa {
     this.app = options.app
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
   handleRequest(ctx: any, fnMiddleware: any): any {
     const id = StringUtility.id('Request:')
 
@@ -51,20 +53,9 @@ export class Core extends Koa {
 
     return result
   }
-
-  setContainer(container: Container): Core {
-    this.container = container
-
-    return this
-  }
-
-  setApp(app: App) {
-    this.app = app
-
-    return this
-  }
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 function respond(ctx: any) {
   // allow bypassing koa
   if (false === ctx.respond) return
