@@ -5,11 +5,11 @@ import {
   Request as KoaRequest,
   Response as KoaResponse,
 } from 'koa'
-import { KeyValue } from '../app/types'
 import { VisionElixir } from '../app/lib/VisionElixir'
 
 export type Context = KoaContext & {
-  data: KeyValue
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: Map<any, any>
   visionElixir: VisionElixir
 }
 export type Middleware = KoaMiddleware
