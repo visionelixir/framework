@@ -1,0 +1,5 @@
+export { VisionElixirPerformance } from './lib/VisionElixirPerformance'
+export { PerformanceError } from './errors/PerformanceError'
+export { VisionElixirPerformanceMark } from './lib/VisionElixirPerformanceMark'
+export { PerformanceFacade } from './facades/PerformanceFacade'
+export * from './types'

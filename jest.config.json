@@ -1,0 +1,27 @@
+{
+  "rootDir": "src",
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "collectCoverage": true,
+  "collectCoverageFrom": [
+    "./**/*.{ts,js}",
+    "!./**/tests/**/*",
+    "!./**/mocks/**/*",
+    "!./**/__tests__/**/*",
+    "!./**/__mocks__/**/*",
+    "!./**/test/**/*",
+    "!./**/exports.*"
+  ],
+  "coverageReporters": [
+    "text",
+    "text-summary"
+  ],
+  "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)x?$",
+  "testPathIgnorePatterns": [],
+  "transform": {
+    "^.+\\.(ts)?$": "ts-jest"
+  }
+}

@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "allowJs": false,
+        "allowSyntheticDefaultImports": false,
+        "declaration": true,
+        "esModuleInterop": false,
+        "forceConsistentCasingInFileNames": true,
+        "lib": ["esnext"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedParameters": true,
+        "noUnusedLocals": true,
+        "outDir": "dist",
+        "pretty": true,
+        "removeComments": true,
+        "rootDir": "src",
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "strictNullChecks": true,
+        "target": "es2018",
+        "experimentalDecorators": true
+    },
+    "exclude": [ "**/*.test.*", "dist/**", "src/templates" ]
+}
