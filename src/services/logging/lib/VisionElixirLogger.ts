@@ -9,7 +9,7 @@ import {
 import { Console } from '../drivers/Console'
 import { GCloud } from '../drivers/GCloud'
 
-export class ElixirLogger implements Logger {
+export class VisionElixirLogger implements Logger {
   protected loggingDriver: LoggingDriver
   protected logger: GCloud | Console
 
@@ -31,7 +31,11 @@ export class ElixirLogger implements Logger {
     }
   }
 
-  public log(logName: string, message: string, meta?: KeyValue): ElixirLogger {
+  public log(
+    logName: string,
+    message: string,
+    meta?: KeyValue,
+  ): VisionElixirLogger {
     this.render(
       logName,
       Severity.DEFAULT,
@@ -47,7 +51,7 @@ export class ElixirLogger implements Logger {
     logName: string,
     message: string,
     meta?: KeyValue,
-  ): ElixirLogger {
+  ): VisionElixirLogger {
     this.render(
       logName,
       Severity.DEBUG,
@@ -59,7 +63,11 @@ export class ElixirLogger implements Logger {
     return this
   }
 
-  public info(logName: string, message: string, meta?: KeyValue): ElixirLogger {
+  public info(
+    logName: string,
+    message: string,
+    meta?: KeyValue,
+  ): VisionElixirLogger {
     this.render(logName, Severity.INFO, SeverityColors.LEVEL_200, message, meta)
 
     return this
@@ -69,7 +77,7 @@ export class ElixirLogger implements Logger {
     logName: string,
     message: string,
     meta?: KeyValue,
-  ): ElixirLogger {
+  ): VisionElixirLogger {
     this.render(
       logName,
       Severity.NOTICE,
@@ -85,7 +93,7 @@ export class ElixirLogger implements Logger {
     logName: string,
     message: string,
     meta?: KeyValue,
-  ): ElixirLogger {
+  ): VisionElixirLogger {
     this.render(
       logName,
       Severity.WARNING,
@@ -101,7 +109,7 @@ export class ElixirLogger implements Logger {
     logName: string,
     message: string,
     meta?: KeyValue,
-  ): ElixirLogger {
+  ): VisionElixirLogger {
     this.render(
       logName,
       Severity.ERROR,
@@ -117,7 +125,7 @@ export class ElixirLogger implements Logger {
     logName: string,
     message: string,
     meta?: KeyValue,
-  ): ElixirLogger {
+  ): VisionElixirLogger {
     this.render(
       logName,
       Severity.CRITICAL,
@@ -133,7 +141,7 @@ export class ElixirLogger implements Logger {
     logName: string,
     message: string,
     meta?: KeyValue,
-  ): ElixirLogger {
+  ): VisionElixirLogger {
     this.render(
       logName,
       Severity.ALERT,
@@ -149,7 +157,7 @@ export class ElixirLogger implements Logger {
     logName: string,
     message: string,
     meta?: KeyValue,
-  ): ElixirLogger {
+  ): VisionElixirLogger {
     this.render(
       logName,
       Severity.EMERGENCY,

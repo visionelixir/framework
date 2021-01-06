@@ -16,7 +16,7 @@ VisionElixir has two scopes:
 1. Global - The application level scope
 2. Local - The request/response lifecycle scope (this happens within the global scope)
 
-There for there are two service container instances, one at each level.
+Therefore, there are two service container instances, one at each level.
 
 Why two containers/scopes? Some services are better booted once, at application level such as a logger. Others need to
 be local to the request/response, such as the collector.
