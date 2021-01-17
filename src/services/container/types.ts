@@ -1,11 +1,11 @@
-export enum ContainerTypes {
+export enum ContainerType {
   TRANSIENT = 'transient',
   SINGLETON = 'singleton',
 }
 
 export interface ContainerService {
   name: string
-  type: ContainerTypes
+  type: ContainerType
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   object: any
 }
@@ -19,7 +19,7 @@ export interface Container {
   singleton(name: string, object: any, force?: boolean): Container
   setService(
     name: string,
-    type: ContainerTypes,
+    type: ContainerType,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     object: any,
     force?: boolean,

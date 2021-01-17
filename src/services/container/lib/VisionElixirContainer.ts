@@ -1,5 +1,5 @@
 import { KeyValue } from '../../app/types'
-import { Class, ContainerService, ContainerTypes, Container } from '../types'
+import { Class, ContainerService, ContainerType, Container } from '../types'
 import { ContainerError } from '../errors/ContainerError'
 
 export class VisionElixirContainer implements Container {
@@ -21,7 +21,7 @@ export class VisionElixirContainer implements Container {
     object: Class,
     force = false,
   ): VisionElixirContainer {
-    this.setService(name, ContainerTypes.TRANSIENT, object, force)
+    this.setService(name, ContainerType.TRANSIENT, object, force)
 
     return this
   }
@@ -32,14 +32,14 @@ export class VisionElixirContainer implements Container {
     object: any,
     force = false,
   ): VisionElixirContainer {
-    this.setService(name, ContainerTypes.SINGLETON, object, force)
+    this.setService(name, ContainerType.SINGLETON, object, force)
 
     return this
   }
 
   public setService(
     name: string,
-    type: ContainerTypes,
+    type: ContainerType,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types
     object: any,
     force = false,
@@ -69,7 +69,7 @@ export class VisionElixirContainer implements Container {
 
       const resolved = this.getService(serviceName)
 
-      if (resolved.type === ContainerTypes.SINGLETON) {
+      if (resolved.type === ContainerType.SINGLETON) {
         requested[serviceName] = resolved.object
       } else {
         requested[serviceName] = new resolved.object()

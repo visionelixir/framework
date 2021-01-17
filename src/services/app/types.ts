@@ -1,5 +1,6 @@
 import { Container } from '../container/types'
 
+// @todo remove for Map instances instead
 export interface KeyValue {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any

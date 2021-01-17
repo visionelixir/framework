@@ -53,3 +53,7 @@ None
 ## Methods
 
 None - this just returns the VisionElixirConfig object
+
+## Types 
+
+`SERVICE_CONFIG` - Constant for the container registration string

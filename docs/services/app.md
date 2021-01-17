@@ -231,3 +231,11 @@ const {
 `.container()` Returns the local request/response level container (see the container documentation for more info)
 
 `.globalContainer()` Returns the global application level container (see the container documentation for more info)
+
+## Types
+
+`VisionElixirConfig` - The configuration interface for the app
+
+`Service` - Interface for the ServiceClasses to implement
+
+`SERVICE_APP` - Constant for the container registration string

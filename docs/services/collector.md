@@ -130,3 +130,9 @@ Collector.clear('myCollection2')
 Collector.clear()
 // {}
 ```
+
+## Types
+
+`Collector` - Interface for the service
+
+`SERVICE_COLLECTOR` - Constant for the container registration string

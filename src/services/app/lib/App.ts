@@ -20,6 +20,8 @@ import { ZoneManager } from '../../zone/lib/VisionElixirZoneManager'
 import { Zone } from '../../zone/types'
 import { Middleware } from '../../core/types'
 
+// @todo remove KeyValue for Set/Map Objects
+
 export class App {
   public serviceObjects: Service[] = []
   protected core: Core

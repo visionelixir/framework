@@ -80,4 +80,30 @@ if the service is not found within the container.
 
 `.getName(): string` returns the name of the container
 
-`.transient(name: string, object: Class, force = false,): VisionElixirContainer` registers a class as transient
+`.transient(name: string, object: Class, force = false,): Container` registers a class as transient.
+meaning that each time you resolve it, you'll get a new constructed instance of the object.
+
+`.singleton(name: string, object: any, force = false): Container` registers a singleton object into
+the container. Meaning that each time you resolve it you'll get the same instance back.
+
+`.setService(name: string, type: ContainerType, object: any, force?: boolean): Container` registers an object with the
+container, both the transient and singleton methods call this method internally. The force parameter will force overriding
+a service already registered with the passed name instead of throwing an error that it is already registered.
+
+`.resolve<T>(...serviceNames: string[]): T` resolves service(s) from the container. E.g. `const { serviceA, serviceB } = container.resolve<{ serviceA: ServiceA, serviceB: ServiceB }>('serviceA', 'serviceB')`
+Note that a single argument will return the service directly but with mulitple services then an object is returned which
+is keyed by the name of the service.
+
+`.getService(name: string): ContainerService` returns the mapped service from the container including the name, ContainerType and the object
+
+`.has(name: string): boolean` returns if the given service is registered within the container
+
+## Types
+
+`ContainerType` (TRANSIENT, SINGLETON)
+
+`ContainerService` ({ name, type, object })
+
+`Container` ({ transient(), singleton(), setService(), resolve(), getService(), has() })
+
+`Containers` (LOCAL, GLOBAL)
