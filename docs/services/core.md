@@ -1,4 +1,4 @@
-# Config Service
+# Core Service
 
 - **Registered:** N/A
 - **Container Name:** N/A

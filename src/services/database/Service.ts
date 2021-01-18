@@ -2,7 +2,7 @@ import { Service, SERVICE_APP } from '../app/types'
 import {
   DatabaseConfig,
   DatabaseConnectionTypes,
-  DatabaseManager,
+  Database,
   SERVICE_DATABASE,
 } from './types'
 import { DatabaseError } from './errors/DatabaseError'
@@ -21,7 +21,7 @@ export default class DatabaseService implements Service {
   public globalBoot(container: Container): void {
     const { app, database } = container.resolve<{
       app: App
-      database: DatabaseManager
+      database: Database
     }>(SERVICE_APP, SERVICE_DATABASE)
 
     const { database: databaseConfig } = app.getConfig()
@@ -33,7 +33,7 @@ export default class DatabaseService implements Service {
   }
 
   public static setupConnections = (
-    databaseManager: DatabaseManager,
+    databaseManager: Database,
     config: DatabaseConfig,
   ): void => {
     for (const i in config.connections) {

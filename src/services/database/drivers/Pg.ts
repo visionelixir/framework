@@ -2,7 +2,7 @@ import { Pool, types } from 'pg'
 import * as _ from 'lodash'
 import {
   DatabaseConnectionConfig,
-  Database,
+  DatabaseConnection,
   QueryResult,
   QueryParams,
 } from '../types'
@@ -19,7 +19,7 @@ import { Performance, SERVICE_PERFORMANCE } from '../../performance/types'
 import { StringUtility } from '../../../utilities/StringUtility'
 import { NumberUtility } from '../../../utilities/NumberUtility'
 
-export class Pg extends Database {
+export class Pg extends DatabaseConnection {
   protected pool: Pool
   protected config: DatabaseConnectionConfig
   protected name: string
@@ -47,7 +47,7 @@ export class Pg extends Database {
     })
   }
 
-  protected connect = (config: DatabaseConnectionConfig): Pg => {
+  public connect = (config: DatabaseConnectionConfig): Pg => {
     this.config = config
 
     this.pool = new Pool(config)

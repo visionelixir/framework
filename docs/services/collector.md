@@ -52,11 +52,11 @@ Collector.add('myCollection', 'my value')
 When you have access to the service container such as in Service Class methods then you can resolve it:
 
 ```typescript
-import { SERVICE_COLLECTOR } from '@visionelixir/framework'
+import { SERVICE_COLLECTOR, Container } from '@visionelixir/framework'
 
 export default class ConfigService implements Service {
   public boot(container: Container): void {
-    const collector = container.resolve<App>(SERVICE_COLLECTOR) // resolve it from the container
+    const collector = container.resolve<Container>(SERVICE_COLLECTOR) // resolve it from the container
   }
 }
 ```

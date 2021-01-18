@@ -108,6 +108,10 @@ export class Environment {
       environment = process.env.NODE_ENV as VisionElixirEnvironment
     }
 
+    if (process.env.ENVIRONMENT) {
+      environment = process.env.NODE_ENV as VisionElixirEnvironment
+    }
+
     if (commandVars.ENVIRONMENT) {
       environment = commandVars.ENVIRONMENT as VisionElixirEnvironment
     }

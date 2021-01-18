@@ -9,11 +9,9 @@ export interface Emitter {
 
 export interface Event {
   setName(name: string): Event
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setData(data: any): Event
+  setData<T>(data: T): Event
   getName(): string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getData(): any
+  getData<T>(): T
 }
 
 export interface EventListener {

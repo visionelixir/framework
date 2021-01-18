@@ -1,7 +1,7 @@
 import { Emitter } from '../event/types'
 import { VisionElixirZoneEvents } from '../zone/types'
 import { VisionElixirEvent } from '../event/lib/VisionElixirEvent'
-import { Service } from '../app/types'
+import { KeyValue, Service } from '../app/types'
 import { VisionElixirContainer } from './lib/VisionElixirContainer'
 import { Container, Containers } from './types'
 
@@ -20,7 +20,7 @@ export default class ContainerService implements Service {
         )
 
         // get the zone data object
-        const data = event.getData()
+        const data = event.getData<KeyValue>()
 
         // add the container and global container
         // into the zone

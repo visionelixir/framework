@@ -5,6 +5,9 @@ import { App } from '../app/lib/App'
 import { Emitter, SERVICE_EMITTER } from './types'
 import { VisionElixir } from '../app/lib/VisionElixir'
 
+// @todo add a list of all core events and what they are/can be used for to the event docs
+// @todo revisit core events and event naming
+
 export default class EventsService implements Service {
   public globalInit(container: Container): void {
     const emitter = new VisionElixirEmitter()

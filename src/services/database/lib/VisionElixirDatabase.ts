@@ -1,7 +1,7 @@
 import { Pg } from '../drivers/Pg'
-import { DEFAULT_CONNECTION, DatabaseManager } from '../types'
+import { DEFAULT_CONNECTION, Database } from '../types'
 
-export class VisionElixirDatabase implements DatabaseManager {
+export class VisionElixirDatabase implements Database {
   protected connections: { [key: string]: Pg } = {}
 
   public add(name: string, instance: Pg): VisionElixirDatabase {

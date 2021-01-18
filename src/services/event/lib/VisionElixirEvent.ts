@@ -23,8 +23,7 @@ export class VisionElixirEvent implements Event {
     return this
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types
-  public setData(data: any): VisionElixirEvent {
+  public setData<T>(data: T): VisionElixirEvent {
     this.data = data
 
     return this
@@ -34,8 +33,7 @@ export class VisionElixirEvent implements Event {
     return this.name
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public getData(): any {
+  public getData<T>(): T {
     return this.data
   }
 }

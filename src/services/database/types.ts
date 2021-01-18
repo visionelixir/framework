@@ -8,10 +8,13 @@ export type QueryResult = KeyValue
 
 export type QueryParams = (string | number | null | string[] | number[])[]
 
-export abstract class Database {
+export abstract class DatabaseConnection {
   // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars
   protected constructor(_name: string, _config: DatabaseConnectionConfig) {}
-  public abstract disconnect(): Promise<Database>
+  public abstract connect(
+    config: DatabaseConnectionConfig,
+  ): DatabaseConnection | Promise<DatabaseConnection>
+  public abstract disconnect(): Promise<DatabaseConnection>
   public abstract query<T>(
     query: string,
     params?: QueryParams,
@@ -24,10 +27,10 @@ export abstract class Database {
   ): Promise<T | null>
 }
 
-export interface DatabaseManager {
-  add(name: string, instance: Database): DatabaseManager
-  get(name?: string): Database
-  all(): { [key: string]: Database }
+export interface Database {
+  add(name: string, instance: DatabaseConnection): Database
+  get(name?: string): DatabaseConnection
+  all(): { [key: string]: DatabaseConnection }
 }
 
 declare module '../app/types' {

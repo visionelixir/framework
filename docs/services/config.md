@@ -29,7 +29,7 @@ const appName = Config.name
 When you have access to the service container such as in Service Class methods then you can resolve it:
 
 ```typescript
-import { SERVICE_CONFIG } from '@visionelixir/framework'
+import { SERVICE_CONFIG, Container, SERVICE_CONFIG } from '@visionelixir/framework'
 
 export default class ConfigService implements Service {
   public boot(container: Container): void {

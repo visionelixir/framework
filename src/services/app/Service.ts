@@ -33,7 +33,7 @@ export default class AppService implements Service {
     emitter.on(
       VisionElixirZoneEvents.ZONE_SETUP,
       (event: VisionElixirEvent) => {
-        const data = event.getData()
+        const data = event.getData<KeyValue>()
         data.app = app
       },
     )

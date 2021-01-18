@@ -1,4 +1,4 @@
-import { Route, RouterMethods, Router } from '../types'
+import { Route, RouterMethod, Router } from '../types'
 import * as KoaRouter from 'koa-router'
 import { VisionElixirRoute } from './VisionElixirRoute'
 import { Middleware } from '../../core/types'
@@ -23,13 +23,13 @@ export class VisionElixirRouter implements Router {
   }
 
   public all = (path: string, middleware: Middleware[]): VisionElixirRouter => {
-    this.add(RouterMethods.ALL, path, middleware)
+    this.add(RouterMethod.ALL, path, middleware)
 
     return this
   }
 
   public get = (path: string, middleware: Middleware[]): VisionElixirRouter => {
-    this.add(RouterMethods.GET, path, middleware)
+    this.add(RouterMethod.GET, path, middleware)
 
     return this
   }
@@ -38,13 +38,13 @@ export class VisionElixirRouter implements Router {
     path: string,
     middleware: Middleware[],
   ): VisionElixirRouter => {
-    this.add(RouterMethods.POST, path, middleware)
+    this.add(RouterMethod.POST, path, middleware)
 
     return this
   }
 
   public put = (path: string, middleware: Middleware[]): VisionElixirRouter => {
-    this.add(RouterMethods.PUT, path, middleware)
+    this.add(RouterMethod.PUT, path, middleware)
 
     return this
   }
@@ -53,7 +53,7 @@ export class VisionElixirRouter implements Router {
     path: string,
     middleware: Middleware[],
   ): VisionElixirRouter => {
-    this.add(RouterMethods.PATCH, path, middleware)
+    this.add(RouterMethod.PATCH, path, middleware)
 
     return this
   }
@@ -62,7 +62,7 @@ export class VisionElixirRouter implements Router {
     path: string,
     middleware: Middleware[],
   ): VisionElixirRouter => {
-    this.add(RouterMethods.DELETE, path, middleware)
+    this.add(RouterMethod.DELETE, path, middleware)
 
     return this
   }
@@ -71,13 +71,13 @@ export class VisionElixirRouter implements Router {
     path: string,
     middleware: Middleware[],
   ): VisionElixirRouter => {
-    this.add(RouterMethods.OPTIONS, path, middleware)
+    this.add(RouterMethod.OPTIONS, path, middleware)
 
     return this
   }
 
   public some = (
-    methods: RouterMethods[],
+    methods: RouterMethod[],
     path: string,
     middleware: Middleware[],
   ): VisionElixirRouter => {
@@ -87,7 +87,7 @@ export class VisionElixirRouter implements Router {
   }
 
   public add = (
-    method: RouterMethods,
+    method: RouterMethod,
     path: string,
     middleware: Middleware[],
   ): VisionElixirRouter => {

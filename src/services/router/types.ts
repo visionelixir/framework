@@ -7,7 +7,7 @@ export interface CoreRouter extends KoaRouter {
   [key: string]: any
 }
 
-export enum RouterMethods {
+export enum RouterMethod {
   GET = 'get',
   POST = 'post',
   PUT = 'put',
@@ -24,7 +24,7 @@ export interface Route {
 }
 
 export interface Router {
-  find(path: string, method: RouterMethods): Route | undefined
+  find(path: string, method: RouterMethod): Route | undefined
   all(path: string, middleware: Middleware[]): Router
   get(path: string, middleware: Middleware[]): Router
   post(path: string, middleware: Middleware[]): Router
@@ -32,8 +32,8 @@ export interface Router {
   patch(path: string, middleware: Middleware[]): Router
   delete(path: string, middleware: Middleware[]): Router
   options(path: string, middleware: Middleware[]): Router
-  some(methods: RouterMethods[], path: string, middleware: Middleware[]): Router
-  add(method: RouterMethods, path: string, middleware: Middleware[]): Router
+  some(methods: RouterMethod[], path: string, middleware: Middleware[]): Router
+  add(method: RouterMethod, path: string, middleware: Middleware[]): Router
   getRoutes(): Route[]
   getCore(): KoaRouter
 }
