@@ -1,4 +1,4 @@
-import { Context, Middleware, Next } from '../../core/types'
+import { Context, HttpStatus, Middleware, Next } from '../../core/types'
 import { PayloadError } from '../errors/PayloadError'
 import { VisionElixirError } from '../errors/VisionElixirError'
 import {
@@ -20,7 +20,7 @@ export class ErrorMiddleware {
         const { status } = ctx
 
         if (!String(status).startsWith('5')) {
-          ctx.status = 500
+          ctx.status = HttpStatus.INTERNAL_SERVER_ERROR
         }
 
         if (!(error instanceof PayloadError)) {

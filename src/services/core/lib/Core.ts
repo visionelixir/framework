@@ -10,6 +10,7 @@ import { Emitter, SERVICE_EMITTER } from '../../event/types'
 import { KeyValue } from '../../app/types'
 import { VisionElixirZoneEvents } from '../../zone/types'
 import { VisionElixirEvent } from '../../event/lib/VisionElixirEvent'
+import { HttpStatus } from '../types'
 
 export class Core extends Koa {
   protected container: Container
@@ -44,7 +45,7 @@ export class Core extends Koa {
 
     zone.run(async () => {
       const res = ctx.res
-      res.statusCode = 404
+      res.statusCode = HttpStatus.NOT_FOUND
       const onerror = (err: Error) => ctx.onerror(err)
       const handleResponse = () => respond(ctx)
       onFinished(res, onerror)
