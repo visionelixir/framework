@@ -254,7 +254,9 @@ export class App {
     performance.stop('app:serve')
     performance.stop('app:total-boot')
 
-    this.outputPerformance()
+    if (this.getConfig().output?.performance) {
+      this.outputPerformance()
+    }
   }
 
   protected outputPerformance(): App {

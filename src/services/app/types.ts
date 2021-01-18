@@ -14,6 +14,10 @@ export interface VisionElixirConfig {
 
   baseDirectory: string
 
+  output?: {
+    performance?: boolean
+  }
+
   static: {
     directory: string
     maxage?: number
