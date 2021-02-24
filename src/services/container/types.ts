@@ -30,6 +30,6 @@ export interface Container {
 }
 
 export enum Containers {
-  LOCAL = 'local',
-  GLOBAL = 'global',
+  REQUEST = 'request',
+  APPLICATION = 'application',
 }

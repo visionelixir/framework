@@ -1,6 +1,6 @@
 # Config Service
 
-- **Registered:** Global container
+- **Registered:** Application container
 - **Container Name:** `'database'` or via constant `import { SERVICE_DATABASE } from '@visionelixir/framework'`
 - **Type:** Singleton
 

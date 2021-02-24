@@ -5,7 +5,7 @@ import { LoggingDriver, SERVICE_LOGGER } from './types'
 import { SERVICE_CONFIG } from '../config/types'
 
 export default class LoggerService implements Service {
-  public globalInit(container: Container): void {
+  public applicationInit(container: Container): void {
     const logger = new VisionElixirLogger(
       container.resolve<VisionElixirConfig>(SERVICE_CONFIG).logging?.type ||
         LoggingDriver.CONSOLE,

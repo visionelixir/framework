@@ -9,7 +9,7 @@ import { Container } from '../../container/types'
 import {
   Emitter,
   SERVICE_EMITTER,
-  VisionElixirLocalEvents,
+  VisionElixirRequestEvents,
 } from '../../event/types'
 import { VisionElixirEvent } from '../../event/lib/VisionElixirEvent'
 import { App } from '../lib/App'
@@ -146,13 +146,13 @@ export class AppMiddleware {
       // listen on the response finish event
       ctx.res.on('finish', () => {
         emitter.emit(
-          VisionElixirLocalEvents.RESPONSE_POST,
+          VisionElixirRequestEvents.RESPONSE_POST,
           new VisionElixirEvent({ ctx }),
         )
       })
 
       emitter.emit(
-        VisionElixirLocalEvents.RESPONSE_PRE,
+        VisionElixirRequestEvents.RESPONSE_PRE,
         new VisionElixirEvent({ ctx }),
       )
 

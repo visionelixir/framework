@@ -7,11 +7,11 @@ import * as nunjucks from 'nunjucks'
 import { SERVICE_VIEW } from './types'
 
 export default class ViewService implements Service {
-  public globalInit(container: Container): void {
+  public applicationInit(container: Container): void {
     container.singleton(SERVICE_VIEW, new VisionElixirView())
   }
 
-  public globalBoot(container: Container): void {
+  public applicationBoot(container: Container): void {
     const config = container.resolve<App>(SERVICE_APP).getConfig()
 
     if (config.view) {

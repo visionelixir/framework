@@ -10,22 +10,23 @@ import { Emitter, SERVICE_EMITTER } from '../../event/types'
 import { KeyValue } from '../../app/types'
 import { VisionElixirZoneEvents } from '../../zone/types'
 import { VisionElixirEvent } from '../../event/lib/VisionElixirEvent'
-import { HttpStatus } from '../types'
+import { Context, HttpStatus } from '../types'
 
 export class Core extends Koa {
   protected container: Container
   protected app: App
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-  constructor(options: any) {
+  constructor(options: { container: Container; app: App }) {
     super()
 
     this.container = options.container
     this.app = options.app
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-  handleRequest(ctx: any, fnMiddleware: any): any {
+  public handleRequest(
+    ctx: Context,
+    fnMiddleware: (ctx: Context) => Promise<void>,
+  ): any {
     const id = StringUtility.id('Request:')
 
     const emitter = this.container.resolve<Emitter>(SERVICE_EMITTER)

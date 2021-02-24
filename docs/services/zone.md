@@ -1,6 +1,6 @@
 # Zone Service
 
-- **Registered:** Global Container
+- **Registered:** Application Container
 - **Container Name:** `'zone'` or via constant `import { SERVICE_ZONE } from '@visionelixir/framework'`
 - **Type:** Singleton
 

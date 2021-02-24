@@ -37,10 +37,11 @@ export interface VisionElixirConfig {
 }
 
 export interface Service {
-  globalInit?: (container: Container) => void
-  globalBoot?: (container: Container) => void
+  applicationInit?: (container: Container) => void
+  applicationBoot?: (container: Container) => void
   init?: (container: Container) => void
   boot?: (container: Container) => void
+  down?: (container: Container) => Promise<void>
 }
 
 export const SERVICE_APP = 'app'

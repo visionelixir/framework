@@ -1,6 +1,6 @@
 # View Service
 
-- **Registered:** Global container
+- **Registered:** Application container
 - **Container Name:** `'view'` or via constant `import { SERVICE_VIEW } from '@visionelixir/framework'`
 - **Type:** Singleton
 

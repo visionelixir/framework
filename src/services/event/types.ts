@@ -18,7 +18,7 @@ export interface EventListener {
   (event: Event): void
 }
 
-export enum VisionElixirLocalEvents {
+export enum VisionElixirRequestEvents {
   INIT_SERVICE_SETUP_PRE = 'VE:Init:Service.Setup.Pre',
   INIT_SERVICE_SETUP_POST = 'VE:Init:Service.Setup.Post',
   RESPONSE_PRE = 'VE:Response:Pre',
@@ -28,14 +28,17 @@ export enum VisionElixirLocalEvents {
   INIT_VARS = 'VE:Init:Vars',
 }
 
-export enum VisionElixirGlobalEvents {
+export enum VisionElixirApplicationEvents {
   INIT_MIDDLEWARE = 'VE:Init:Middleware',
 }
 
 declare module '../app/types' {
   interface Service {
     registerEvents?: (emitter?: Emitter, container?: Container) => void
-    globalRegisterEvents?: (emitter?: Emitter, container?: Container) => void
+    applicationRegisterEvents?: (
+      emitter?: Emitter,
+      container?: Container,
+    ) => void
   }
 }
 

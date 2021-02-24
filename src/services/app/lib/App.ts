@@ -8,7 +8,7 @@ import { Logger, SERVICE_LOGGER } from '../../logging/types'
 import {
   Emitter,
   SERVICE_EMITTER,
-  VisionElixirGlobalEvents,
+  VisionElixirApplicationEvents,
 } from '../../event/types'
 import { VisionElixirEvent } from '../../event/lib/VisionElixirEvent'
 import { VisionElixirContainer } from '../../container/lib/VisionElixirContainer'
@@ -20,10 +20,14 @@ import { ZoneManager } from '../../zone/lib/VisionElixirZoneManager'
 import { Zone } from '../../zone/types'
 import { Middleware } from '../../core/types'
 
-// @todo remove KeyValue for Set/Map Objects
+/**
+ * Class App
+ *
+ * Main application class for creating and serving an application
+ */
 
 export class App {
-  public serviceObjects: Service[] = []
+  protected serviceObjects: Service[] = []
   protected core: Core
   protected config: VisionElixirConfig
   protected isServed = false
@@ -33,6 +37,11 @@ export class App {
   protected container: Container
   protected performance: Performance
 
+  /**
+   * Constructor
+   *
+   * Instantiate an application. If a config is passed then create the application
+   */
   public constructor(config?: VisionElixirConfig) {
     this.performance = new VisionElixirPerformance()
 
@@ -45,16 +54,15 @@ export class App {
 
   /**
    * Create
-   * Orchestrates the creation of the app
    *
-   * @param config
+   * Orchestrates the creation of the app
    */
   public create(config: VisionElixirConfig): App {
     const performance = this.getPerformance()
 
-    performance.start('app:create.global-container')
-    this.createGlobalContainer()
-    performance.stop('app:create.global-container')
+    performance.start('app:create.application-container')
+    this.createApplicationContainer()
+    performance.stop('app:create.application-container')
 
     const zone = this.createAppZone()
 
@@ -70,17 +78,17 @@ export class App {
       this.loadServices()
       performance.stop('app:create.load-services')
 
-      performance.start('app:create.init-global-services')
-      this.initGlobalServices()
-      performance.stop('app:create.init-global-services')
+      performance.start('app:create.init-application-services')
+      this.initApplicationServices()
+      performance.stop('app:create.init-application-services')
 
       performance.start('app:create.set-logger')
       this.setLogger()
       performance.stop('app:create.set-logger')
 
-      performance.start('app:create.boot-global-services')
-      this.bootGlobalServices()
-      performance.stop('app:create.boot-global-services')
+      performance.start('app:create.boot-application-services')
+      this.bootApplicationServices()
+      performance.stop('app:create.boot-application-services')
 
       performance.start('app:create.create-core')
       this.createCore()
@@ -96,22 +104,47 @@ export class App {
     return this
   }
 
+  /**
+   * Get Service Objects
+   *
+   * Getter for service object array
+   */
   public getServiceObjects(): Service[] {
     return this.serviceObjects
   }
 
+  /**
+   * Get Core
+   *
+   * Getter for the core
+   */
   public getCore(): Core {
     return this.core
   }
 
+  /**
+   * Get Status
+   *
+   * Returns if the application is served or not
+   */
   public getStatus(): boolean {
     return this.isServed
   }
 
+  /**
+   * Get Config
+   *
+   * Returns the application config
+   */
   public getConfig(): VisionElixirConfig {
     return this.config
   }
 
+  /**
+   * Up
+   *
+   * Serves the application
+   */
   public async up(): Promise<App> {
     return new Promise((resolve) => {
       this.getPerformance().start('app:serve')
@@ -134,8 +167,20 @@ export class App {
     })
   }
 
-  // @todo give services a chance to tear down too
+  /**
+   * Down
+   *
+   * Tears down the application. Stopping the server and tearing down services.
+   */
   public async down(): Promise<App> {
+    for (const i in this.getServiceObjects()) {
+      const service = this.getServiceObjects()[i]
+
+      if (service.down) {
+        await service.down(this.getContainer())
+      }
+    }
+
     return new Promise((resolve, reject) => {
       this.server.close((error: Error) => {
         if (error) {
@@ -157,6 +202,12 @@ export class App {
     return this.performance
   }
 
+  /**
+   * Create App Zone
+   *
+   * Creates an async zone for the application adding the container and app
+   * into the zone.
+   */
   protected createAppZone(): Zone {
     ZoneManager.boot()
 
@@ -165,68 +216,109 @@ export class App {
     })
   }
 
+  /**
+   * Load Environment
+   *
+   * Calls 'which' but just loads the environment
+   */
   protected loadEnvironment(): App {
     Environment.which()
 
     return this
   }
 
-  protected createGlobalContainer(): App {
-    this.container = new VisionElixirContainer(Containers.GLOBAL)
+  /**
+   * Create Application Container
+   *
+   * Creates the container for registering application level services
+   */
+  protected createApplicationContainer(): App {
+    this.container = new VisionElixirContainer(Containers.APPLICATION)
 
     return this
   }
 
+  /**
+   * Load Services
+   *
+   * Call the loader to load all the services
+   */
   protected loadServices(): App {
     this.serviceObjects = VisionElixirLoader.loadServiceObjects(
       this.getConfig(),
     )
 
-    // register app into the global container
+    // register app into the application container
     this.getContainer().singleton('app', this)
 
     return this
   }
 
-  protected initGlobalServices(): App {
+  /**
+   * Init Application Level Services
+   *
+   * Call the application init method on each registered service
+   */
+  protected initApplicationServices(): App {
     this.serviceObjects.forEach((service: Service) => {
-      if (service.globalInit) {
-        service.globalInit(this.container)
+      if (service.applicationInit) {
+        service.applicationInit(this.container)
       }
     })
 
     return this
   }
 
-  protected bootGlobalServices(): App {
+  /**
+   * Boot Application Services
+   *
+   * Call the application boot method on each registered service
+   */
+  protected bootApplicationServices(): App {
     this.serviceObjects.forEach((service: Service) => {
-      if (service.globalBoot) {
-        service.globalBoot(this.container)
+      if (service.applicationBoot) {
+        service.applicationBoot(this.container)
       }
     })
 
     return this
   }
 
+  /**
+   * Set Logger
+   *
+   * Grab the logger from the container and set it on the instance
+   */
   protected setLogger(): App {
     this.logger = this.container.resolve<Logger>(SERVICE_LOGGER)
 
     return this
   }
 
+  /**
+   * Create Core
+   *
+   * Instantiate the core instance
+   */
   protected createCore(): App {
     this.core = new Core({ container: this.getContainer(), app: this })
 
     return this
   }
 
+  /**
+   * Configure Middleware
+   *
+   * Creates the middleware stack and allows services to add into it,
+   * then registers the middleware into the core to be used
+   */
   protected configureMiddleware(): App {
     const coreMiddlewareStack: Middleware[] = []
 
     this.emitter = this.container.resolve<Emitter>(SERVICE_EMITTER)
 
     this.emitter.emit(
-      VisionElixirGlobalEvents.INIT_MIDDLEWARE,
+      VisionElixirApplicationEvents.INIT_MIDDLEWARE,
       new VisionElixirEvent({ middleware: coreMiddlewareStack }),
     )
 
@@ -237,12 +329,22 @@ export class App {
     return this
   }
 
+  /**
+   * Set Status
+   *
+   * Updates the served status
+   */
   protected setStatus(status: boolean): App {
     this.isServed = status
 
     return this
   }
 
+  /**
+   * Serving Error
+   *
+   * Called when there's an error serving the application
+   */
   protected servingError(error: Error): void {
     const performance = this.getPerformance()
 
@@ -259,6 +361,12 @@ export class App {
     }
   }
 
+  /**
+   * Output Performance
+   *
+   * Outputs the boot/serve performance. Useful for seeing if any services
+   * are slowing down the booting process.
+   */
   protected outputPerformance(): App {
     const performance: KeyValue = {}
 
@@ -273,6 +381,12 @@ export class App {
     return this
   }
 
+  /**
+   * Served
+   *
+   * Called when the application is successfully served.
+   * @protected
+   */
   protected served(): App {
     const { name, host, port } = this.getConfig()
     const performance = this.getPerformance()

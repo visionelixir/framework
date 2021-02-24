@@ -4,7 +4,7 @@ import { ZoneManager } from './lib/VisionElixirZoneManager'
 import { SERVICE_ZONE } from './types'
 
 export default class ZoneService implements Service {
-  public globalInit(container: Container): void {
+  public applicationInit(container: Container): void {
     container.singleton(SERVICE_ZONE, ZoneManager)
   }
 }

@@ -12,13 +12,13 @@ import { VisionElixirDatabase } from './lib/VisionElixirDatabase'
 import { App } from '../app/lib/App'
 
 export default class DatabaseService implements Service {
-  public globalInit(container: Container): void {
+  public applicationInit(container: Container): void {
     const database = new VisionElixirDatabase()
 
     container.singleton(SERVICE_DATABASE, database)
   }
 
-  public globalBoot(container: Container): void {
+  public applicationBoot(container: Container): void {
     const { app, database } = container.resolve<{
       app: App
       database: Database

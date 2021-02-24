@@ -4,7 +4,7 @@ import { VisionElixirError } from '../errors/VisionElixirError'
 import {
   Emitter,
   SERVICE_EMITTER,
-  VisionElixirLocalEvents,
+  VisionElixirRequestEvents,
 } from '../../event/types'
 import { VisionElixirEvent } from '../../event/lib/VisionElixirEvent'
 import { VisionElixir } from '../../app/lib/VisionElixir'
@@ -58,7 +58,7 @@ export class ErrorMiddleware {
       !String(status).startsWith('3')
     ) {
       await emitter.emit(
-        VisionElixirLocalEvents.RESPONSE_ERROR,
+        VisionElixirRequestEvents.RESPONSE_ERROR,
         new VisionElixirEvent({
           status,
           error,

@@ -4,7 +4,7 @@ import { SERVICE_ENVIRONMENT } from './types'
 import { Environment } from './lib/Environment'
 
 export default class DatabaseService implements Service {
-  public globalInit(container: Container): void {
+  public applicationInit(container: Container): void {
     container.singleton(SERVICE_ENVIRONMENT, Environment)
   }
 }

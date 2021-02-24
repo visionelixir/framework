@@ -9,13 +9,13 @@ import { VisionElixir } from '../app/lib/VisionElixir'
 // @todo revisit core events and event naming
 
 export default class EventsService implements Service {
-  public globalInit(container: Container): void {
+  public applicationInit(container: Container): void {
     const emitter = new VisionElixirEmitter()
 
     container.singleton(SERVICE_EMITTER, emitter)
   }
 
-  public globalBoot(container: Container): void {
+  public applicationBoot(container: Container): void {
     const { app, emitter } = container.resolve<{ app: App; emitter: Emitter }>(
       SERVICE_APP,
       SERVICE_EMITTER,
@@ -23,8 +23,8 @@ export default class EventsService implements Service {
     const serviceObjects: Service[] = app.getServiceObjects()
 
     serviceObjects.forEach((service: Service) => {
-      if (service.globalRegisterEvents) {
-        service.globalRegisterEvents(emitter, container)
+      if (service.applicationRegisterEvents) {
+        service.applicationRegisterEvents(emitter, container)
       }
     })
   }

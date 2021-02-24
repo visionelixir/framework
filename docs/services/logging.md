@@ -1,6 +1,6 @@
 # Logging Service
 
-- **Registered:** Global Container
+- **Registered:** Application Container
 - **Container Name:** `'logger'` or via constant `import { SERVICE_LOGGER } from '@visionelixir/framework'`
 - **Type:** Singleton
 

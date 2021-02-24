@@ -28,7 +28,7 @@ export class VisionElixir {
     return VisionElixir.get<Container>('container')
   }
 
-  public static globalContainer(): Container {
-    return VisionElixir.get<Container>('globalContainer')
+  public static applicationContainer(): Container {
+    return VisionElixir.get<Container>('applicationContainer')
   }
 }

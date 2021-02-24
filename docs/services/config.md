@@ -1,6 +1,6 @@
 # Config Service
 
-- **Registered:** Global container
+- **Registered:** Application container
 - **Container Name:** `'config'` or via constant `import { SERVICE_CONFIG } from '@visionelixir/framework'`
 - **Type:** Singleton
 

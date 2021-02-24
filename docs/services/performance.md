@@ -1,6 +1,6 @@
 # Performance Service
 
-- **Registered:** Global and Local containers
+- **Registered:** Application and Request containers
 - **Container Name:** `'performance'` or via constant `import { SERVICE_PERFORMANCE } from '@visionelixir/framework'`
 - **Type:** Singleton
 

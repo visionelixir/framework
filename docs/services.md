@@ -32,26 +32,26 @@ to it in the service container etc.
 
 How you decide to boot your service depends on you, however, the service class provides several hooks into
 the application lifecycle to choose where is best for you. This depends on whether your service is specific to the 
-application (global) or to the request (local). For example, the logger service boots globally to the
+application or to the request. For example, the logger service gets booted to the
 application, as the same logger can be used throughout the application and doesn't rely on anything within the context
 of the request/response lifecycle. Alternatively, the core collector service boots local to the request as it's
 used to collect metadata only within the scope of a request lifecycle.
 
 The service class therefore gives you methods that you can implement to allow you to boot and register your service.
 
-#### The methods for services global to the application:
+#### The methods for services at the application level:
 
-1. `globalInit` - The global init method is called when the application is first being constructed, this is where all
-   globally accessible services get constructed and registered with the service container. This should be where you
+1. `applicationInit` - The application init method is called when the application is first being constructed, this is where all
+   application wide accessible services get constructed and registered with the service container. This should be where you
    initialise your service to where another service can use it.
-2. `globalBoot` - Following the global init method being called is the global boot method. This allows you to do any
+2. `applicationBoot` - Following the application init method being called is the application boot method. This allows you to do any
    further setup of your service as well as know you can safely use other services from the service container.
    
 An example of this is within the database core service. Where the database manager class gets constructed and registered
-with the service container within the globalInit method. Then within the globalBoot method it gets the config and sets
+with the service container within the applicationInit method. Then within the applicationBoot method it gets the config and sets
 up the connections.
 
-#### The methods for services local to the request/response lifecycle:
+#### The methods for services at the request/response lifecycle level:
 
 1. `init` - The init method is called before the middleware flow of a request/response lifecycle starts, this is where all
    locally accessible services get constructed and registered with the service container. This should be where you
@@ -75,12 +75,12 @@ as follows:
 declare module '@visionelixir/framework' {
   interface Service {
     registerEvents?: (emitter?: Emitter, container?: Container) => void
-    globalRegisterEvents?: (emitter?: Emitter, container?: Container) => void
+    applicationRegisterEvents?: (emitter?: Emitter, container?: Container) => void
   }
 }
 ```
 
-Then add the call from with in the `boot` or `globalBoot` methods of your Service Class as follows:
+Then add the call from with in the `boot` or `1applicationBoot` methods of your Service Class as follows:
 
 ```typescript
 const serviceObjects: Service[] = App.getServiceObjects()

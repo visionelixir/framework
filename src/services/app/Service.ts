@@ -1,5 +1,5 @@
 import { KeyValue, Service, SERVICE_APP } from './types'
-import { Emitter, Event, VisionElixirGlobalEvents } from '../event/types'
+import { Emitter, Event, VisionElixirApplicationEvents } from '../event/types'
 import { AppMiddleware } from './middleware/AppMiddleware'
 import { Container } from '../container/types'
 import { App } from './lib/App'
@@ -7,7 +7,10 @@ import { VisionElixirZoneEvents } from '../zone/types'
 import { VisionElixirEvent } from '../event/lib/VisionElixirEvent'
 
 export default class AppService implements Service {
-  public globalRegisterEvents(emitter: Emitter, container: Container): void {
+  public applicationRegisterEvents(
+    emitter: Emitter,
+    container: Container,
+  ): void {
     const app = container.resolve<App>(SERVICE_APP)
 
     const config: KeyValue = { ...app.getConfig() }
@@ -15,7 +18,7 @@ export default class AppService implements Service {
     delete config.static.directory
 
     emitter.on(
-      VisionElixirGlobalEvents.INIT_MIDDLEWARE,
+      VisionElixirApplicationEvents.INIT_MIDDLEWARE,
       (event: Event): void => {
         const { middleware } = event.getData()
         middleware.push(

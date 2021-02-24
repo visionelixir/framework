@@ -1,6 +1,6 @@
 # Event Service
 
-- **Registered:** Global and Local containers
+- **Registered:** Application and Request containers
 - **Container Name:** `'emitter'` or via constant `import { SERVICE_EMITTER } from '@visionelixir/framework'`
 - **Type:** Singleton
 
@@ -8,8 +8,8 @@ The event service provides a way to emit and listen to events at both the Applic
 for decoupling your services from each other.
 
 It's important to note the two scopes of the event emitter:
-- One is scoped at the application level for events such as: `VisionElixirGlobalEvents.INIT_MIDDLEWARE`
-- The other is scoped at the request level for events such as: `VisionElixirLocalEvents.RESPONSE_PRE` and `VisionElixirLocalEvents.RESPONSE_POST`
+- One is scoped at the application level for events such as: `VisionElixirApplicationEvents.INIT_MIDDLEWARE`
+- The other is scoped at the request level for events such as: `VisionElixirRequestEvents.RESPONSE_PRE` and `VisionElixirLocalEvents.RESPONSE_POST`
 
 This is important to know as if you're listening to the wrong Emitter then you'll never receive the event. Equally, if you
 emit on the wrong Emitter, then you'll never trigger the right listeners.

@@ -1,6 +1,6 @@
 # Router Service
 
-- **Registered:** Global container
+- **Registered:** Application container
 - **Container Name:** `'router'` or via constant `import { SERVICE_ROUTER } from '@visionelixir/framework'`
 - **Type:** Singleton
 

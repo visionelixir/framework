@@ -12,7 +12,7 @@ import { VisionElixir } from '../../app/lib/VisionElixir'
 import {
   Emitter,
   SERVICE_EMITTER,
-  VisionElixirLocalEvents,
+  VisionElixirRequestEvents,
 } from '../../event/types'
 import { VisionElixirEvent } from '../../event/lib/VisionElixirEvent'
 import { Performance, SERVICE_PERFORMANCE } from '../../performance/types'
@@ -72,9 +72,13 @@ export class Pg extends DatabaseConnection {
   }
 
   protected getService<T>(service: string): T | undefined {
-    if (VisionElixir.container().has(service)) {
-      return VisionElixir.service<T>(service)
-    } else {
+    try {
+      if (VisionElixir.container().has(service)) {
+        return VisionElixir.service<T>(service)
+      } else {
+        return undefined
+      }
+    } catch (e) {
       return undefined
     }
   }
@@ -117,7 +121,7 @@ export class Pg extends DatabaseConnection {
 
       if (emitter) {
         emitter.emit(
-          VisionElixirLocalEvents.APP_DATA,
+          VisionElixirRequestEvents.APP_DATA,
           new VisionElixirEvent({
             collection: 'queries',
             payload: { name, query, params, time },

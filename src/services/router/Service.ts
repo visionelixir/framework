@@ -2,29 +2,29 @@ import { CoreRouter, Route, Router, SERVICE_ROUTER } from './types'
 import { VisionElixirRouter } from './lib/VisionElixirRouter'
 import { Service, SERVICE_APP } from '../app/types'
 import { Middleware } from '../core/types'
-import { Emitter, Event, VisionElixirGlobalEvents } from '../event/types'
+import { Emitter, Event, VisionElixirApplicationEvents } from '../event/types'
 import { Container } from '../container/types'
 import { App } from '../app/lib/App'
 import { RouterMiddleware } from './middleware/RouterMiddleware'
 
 export default class RouterService implements Service {
   /**
-   * Global Init
-   * Initialises the service within the global scope
+   * Application Init
+   * Initialises the service within the application scope
    *
    * @param container
    */
-  public globalInit(container: Container): void {
+  public applicationInit(container: Container): void {
     container.singleton(SERVICE_ROUTER, new VisionElixirRouter())
   }
 
   /**
-   * Global Boot
-   * Boots the service within the global scope
+   * Application Boot
+   * Boots the service within the application scope
    *
    * @param container
    */
-  public globalBoot(container: Container): void {
+  public applicationBoot(container: Container): void {
     const { app, router } = container.resolve<{ app: App; router: Router }>(
       SERVICE_APP,
       SERVICE_ROUTER,
@@ -42,17 +42,20 @@ export default class RouterService implements Service {
   }
 
   /**
-   * Global Register Events
-   * Registers listeners on the global emitter
+   * Application Register Events
+   * Registers listeners on the application emitter
    *
    * @param emitter
    * @param container
    */
-  public globalRegisterEvents(emitter: Emitter, container: Container): void {
+  public applicationRegisterEvents(
+    emitter: Emitter,
+    container: Container,
+  ): void {
     const router = container.resolve<Router>(SERVICE_ROUTER)
 
     emitter.on(
-      VisionElixirGlobalEvents.INIT_MIDDLEWARE,
+      VisionElixirApplicationEvents.INIT_MIDDLEWARE,
       (event: Event): void => {
         const { middleware } = event.getData()
         middleware.push(

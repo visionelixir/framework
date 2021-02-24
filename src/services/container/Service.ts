@@ -6,26 +6,26 @@ import { VisionElixirContainer } from './lib/VisionElixirContainer'
 import { Container, Containers } from './types'
 
 export default class ContainerService implements Service {
-  public globalRegisterEvents(
+  public applicationRegisterEvents(
     emitter: Emitter,
-    globalContainer: Container,
+    applicationContainer: Container,
   ): void {
     emitter.on(
       VisionElixirZoneEvents.ZONE_SETUP,
       (event: VisionElixirEvent) => {
-        // create the local container extending the global container
+        // create the request container extending the application container
         const container = new VisionElixirContainer(
-          Containers.LOCAL,
-          globalContainer,
+          Containers.REQUEST,
+          applicationContainer,
         )
 
         // get the zone data object
         const data = event.getData<KeyValue>()
 
-        // add the container and global container
+        // add the container and application container
         // into the zone
         data.container = container
-        data.globalContainer = globalContainer
+        data.applicationContainer = applicationContainer
       },
     )
   }

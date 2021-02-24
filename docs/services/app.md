@@ -1,6 +1,6 @@
 # App Service
 
-- **Registered:** Global and local containers
+- **Registered:** Application and Request containers
 - **Container Name:** `'app'` or via constant `import { SERVICE_APP } from '@visionelixir/framework'`
 - **Type:** Singleton
 
