@@ -16,7 +16,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest --config=jest.config.json",
-    "lint": "eslint ./src --ext ts",
+    "lint": "eslint ./src --max-warnings 0 --ext ts",
     "typescript:build": "tsc",
     "typescript:watch": "tsc --watch",
     "check": "npm run lint && tsc --noEmit",
