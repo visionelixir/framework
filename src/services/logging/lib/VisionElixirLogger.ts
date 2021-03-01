@@ -1,6 +1,5 @@
 import { KeyValue } from '../../app/types'
 import {
-  GoogleCloudLoggingConfig,
   Logger,
   LoggingConfig,
   LoggingDriver,
@@ -9,6 +8,7 @@ import {
 } from '../types'
 import { Console } from '../drivers/Console'
 import { GCloud } from '../drivers/GCloud'
+import { VisionElixirError } from '../../error/errors/VisionElixirError'
 
 export class VisionElixirLogger implements Logger {
   protected loggingDriver: LoggingDriver
@@ -27,7 +27,13 @@ export class VisionElixirLogger implements Logger {
         this.logger = new Console()
         break
       case LoggingDriver.GCLOUD:
-        this.logger = new GCloud(config.googleCloud as GoogleCloudLoggingConfig)
+        if (!config.googleCloud) {
+          throw new VisionElixirError(
+            'GCloud config missing from logging config',
+          )
+        }
+
+        this.logger = new GCloud(config.googleCloud)
         break
       default:
         throw new Error(`Logging Driver '${loggingDriver}' does not exist`)
