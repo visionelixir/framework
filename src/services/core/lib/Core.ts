@@ -26,6 +26,7 @@ export class Core extends Koa {
   public handleRequest(
     ctx: Context,
     fnMiddleware: (ctx: Context) => Promise<void>,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): any {
     const id = StringUtility.id('Request:')
 
