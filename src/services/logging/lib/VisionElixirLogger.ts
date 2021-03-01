@@ -1,10 +1,11 @@
 import { KeyValue } from '../../app/types'
 import {
-  Logger,
-  LoggingDriver,
-  SeverityColors,
-  Severity,
   GoogleCloudLoggingConfig,
+  Logger,
+  LoggingConfig,
+  LoggingDriver,
+  Severity,
+  SeverityColors,
 } from '../types'
 import { Console } from '../drivers/Console'
 import { GCloud } from '../drivers/GCloud'
@@ -15,7 +16,9 @@ export class VisionElixirLogger implements Logger {
 
   public constructor(
     loggingDriver: LoggingDriver = LoggingDriver.CONSOLE,
-    config: KeyValue = {},
+    config: LoggingConfig = {
+      type: LoggingDriver.CONSOLE,
+    },
   ) {
     this.loggingDriver = loggingDriver
 
@@ -24,7 +27,7 @@ export class VisionElixirLogger implements Logger {
         this.logger = new Console()
         break
       case LoggingDriver.GCLOUD:
-        this.logger = new GCloud(config as GoogleCloudLoggingConfig)
+        this.logger = new GCloud(config.googleCloud as GoogleCloudLoggingConfig)
         break
       default:
         throw new Error(`Logging Driver '${loggingDriver}' does not exist`)
