@@ -28,7 +28,7 @@
     "git:version:major": "npm run build && npm version major && npm run git:version:push"
   },
   "dependencies": {
-    "@google-cloud/logging": "^9.0.2",
+    "@google-cloud/logging": "^9.1.0",
     "chalk": "^4.1.0",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
@@ -36,16 +36,16 @@
     "koa-compress": "^5.0.1",
     "koa-router": "^10.0.0",
     "koa-static": "^5.0.0",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "nunjucks": "^3.2.3",
     "on-finished": "^2.3.0",
     "pg": "^8.5.1",
     "statuses": "^2.0.1",
-    "yargs-parser": "^20.2.5"
+    "yargs-parser": "^20.2.7"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
-    "@types/koa": "^2.11.8",
+    "@types/koa": "^2.13.1",
     "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-compress": "^4.0.1",
     "@types/koa-router": "^7.4.1",
@@ -53,18 +53,18 @@
     "@types/lodash": "^4.14.168",
     "@types/nunjucks": "^3.1.4",
     "@types/on-finished": "^2.3.1",
-    "@types/pg": "^7.14.10",
+    "@types/pg": "^7.14.11",
     "@types/statuses": "^2.0.0",
     "@types/zone.js": "^0.5.12",
-    "@typescript-eslint/eslint-plugin": "^4.15.1",
-    "@typescript-eslint/parser": "^4.15.1",
-    "eslint": "^7.20.0",
-    "eslint-config-prettier": "^7.2.0",
+    "@typescript-eslint/eslint-plugin": "^4.17.0",
+    "@typescript-eslint/parser": "^4.17.0",
+    "eslint": "^7.22.0",
+    "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
-    "ts-jest": "^26.5.1",
+    "ts-jest": "^26.5.3",
     "ts-node": "^9.1.1",
-    "typescript": "^4.1.5"
+    "typescript": "^4.2.3"
   }
 }

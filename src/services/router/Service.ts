@@ -14,7 +14,7 @@ export default class RouterService implements Service {
    *
    * @param container
    */
-  public applicationInit(container: Container): void {
+  public async applicationInit(container: Container): Promise<void> {
     container.singleton(SERVICE_ROUTER, new VisionElixirRouter())
   }
 
@@ -24,7 +24,7 @@ export default class RouterService implements Service {
    *
    * @param container
    */
-  public applicationBoot(container: Container): void {
+  public async applicationBoot(container: Container): Promise<void> {
     const { app, router } = container.resolve<{ app: App; router: Router }>(
       SERVICE_APP,
       SERVICE_ROUTER,

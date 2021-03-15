@@ -69,3 +69,10 @@ declare module '../app/types' {
     logging?: LoggingConfig
   }
 }
+
+// add the logger to the VE job config declaration
+declare module '../app/types' {
+  interface VisionElixirJobConfig {
+    logging?: LoggingConfig
+  }
+}

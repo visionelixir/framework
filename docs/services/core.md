@@ -1,4 +1,4 @@
-# Core Service
+# AppCore Service
 
 - **Registered:** N/A
 - **Container Name:** N/A

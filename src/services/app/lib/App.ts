@@ -1,4 +1,11 @@
-import { KeyValue, Service, VisionElixirConfig } from '../types'
+import {
+  AppType,
+  KeyValue,
+  Service,
+  SERVICE_APP,
+  VisionElixirConfig,
+  VisionElixirJobConfig,
+} from '../types'
 import { Container, Containers } from '../../container/types'
 import { VisionElixirError } from '../../error/errors/VisionElixirError'
 import * as http from 'http'
@@ -15,10 +22,11 @@ import { VisionElixirContainer } from '../../container/lib/VisionElixirContainer
 import { Performance, PerformanceMark } from '../../performance/types'
 import { VisionElixirPerformance } from '../../performance/lib/VisionElixirPerformance'
 import { Environment } from '../../environment/exports'
-import { Core } from '../../core/lib/Core'
+import { AppCore } from '../../core/lib/AppCore'
 import { ZoneManager } from '../../zone/lib/VisionElixirZoneManager'
 import { Zone } from '../../zone/types'
 import { Middleware } from '../../core/types'
+import { JobCore } from '../../core/lib/JobCore'
 
 /**
  * Class App
@@ -28,8 +36,8 @@ import { Middleware } from '../../core/types'
 
 export class App {
   protected serviceObjects: Service[] = []
-  protected core: Core
-  protected config: VisionElixirConfig
+  protected core: AppCore | JobCore
+  protected config: VisionElixirConfig | VisionElixirJobConfig
   protected isServed = false
   protected server: Server
   protected logger: Logger
@@ -42,7 +50,7 @@ export class App {
    *
    * Instantiate an application. If a config is passed then create the application
    */
-  public constructor(config?: VisionElixirConfig) {
+  public constructor(config?: VisionElixirConfig | VisionElixirJobConfig) {
     this.performance = new VisionElixirPerformance()
 
     this.performance.start('app:total-boot')
@@ -57,7 +65,7 @@ export class App {
    *
    * Orchestrates the creation of the app
    */
-  public create(config: VisionElixirConfig): App {
+  public create(config: VisionElixirConfig | VisionElixirJobConfig): App {
     const performance = this.getPerformance()
 
     performance.start('app:create.application-container')
@@ -118,8 +126,8 @@ export class App {
    *
    * Getter for the core
    */
-  public getCore(): Core {
-    return this.core
+  public getCore<T extends AppCore | JobCore>(): T {
+    return (this.core as unknown) as T
   }
 
   /**
@@ -136,8 +144,36 @@ export class App {
    *
    * Returns the application config
    */
-  public getConfig(): VisionElixirConfig {
-    return this.config
+  public getConfig<T extends VisionElixirConfig | VisionElixirJobConfig>(): T {
+    return (this.config as unknown) as T
+  }
+
+  /**
+   * Get Container
+   *
+   * Returns the application container
+   */
+  public getContainer(): Container {
+    return this.container
+  }
+
+  /**
+   * Get Performance
+   *
+   * Returns the application performance
+   */
+  public getPerformance(): Performance {
+    return this.performance
+  }
+
+  /**
+   * Run
+   *
+   * Runs a job application
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public async run(data?: KeyValue): Promise<any> {
+    return this.getCore<JobCore>().run(data)
   }
 
   /**
@@ -153,10 +189,10 @@ export class App {
         throw new VisionElixirError('Please run create before serving')
       }
 
-      const { port } = this.getConfig()
+      const { port } = this.getConfig<VisionElixirConfig>()
 
       this.server = http
-        .createServer(this.getCore().callback())
+        .createServer(this.getCore<AppCore>().callback())
         .on('error', (error) => {
           this.servingError(error)
         })
@@ -176,30 +212,26 @@ export class App {
     for (const i in this.getServiceObjects()) {
       const service = this.getServiceObjects()[i]
 
-      if (service.down) {
-        await service.down(this.getContainer())
+      if (service.applicationDown) {
+        await service.applicationDown(this.getContainer())
       }
     }
 
-    return new Promise((resolve, reject) => {
-      this.server.close((error: Error) => {
-        if (error) {
-          reject(error)
-        }
+    if (this.getConfig().type === AppType.APP) {
+      return new Promise((resolve, reject) => {
+        this.server.close((error: Error) => {
+          if (error) {
+            reject(error)
+          }
 
-        this.setStatus(false)
+          this.setStatus(false)
 
-        resolve(this)
+          resolve(this)
+        })
       })
-    })
-  }
+    }
 
-  public getContainer(): Container {
-    return this.container
-  }
-
-  public getPerformance(): Performance {
-    return this.performance
+    return this
   }
 
   /**
@@ -249,7 +281,7 @@ export class App {
     )
 
     // register app into the application container
-    this.getContainer().singleton('app', this)
+    this.getContainer().singleton(SERVICE_APP, this)
 
     return this
   }
@@ -301,7 +333,11 @@ export class App {
    * Instantiate the core instance
    */
   protected createCore(): App {
-    this.core = new Core({ container: this.getContainer(), app: this })
+    if (this.config.type === AppType.JOB) {
+      this.core = new JobCore({ container: this.getContainer(), app: this })
+    } else {
+      this.core = new AppCore({ container: this.getContainer(), app: this })
+    }
 
     return this
   }
@@ -356,7 +392,10 @@ export class App {
     performance.stop('app:serve')
     performance.stop('app:total-boot')
 
-    if (this.getConfig().output?.performance) {
+    if (
+      this.getConfig<VisionElixirConfig | VisionElixirJobConfig>().output
+        ?.performance
+    ) {
       this.outputPerformance()
     }
   }
@@ -388,7 +427,7 @@ export class App {
    * @protected
    */
   protected served(): App {
-    const { name, host, port } = this.getConfig()
+    const { name, host, port } = this.getConfig<VisionElixirConfig>()
     const performance = this.getPerformance()
 
     this.setStatus(true)

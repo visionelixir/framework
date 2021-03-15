@@ -5,7 +5,7 @@ import { SERVICE_LOGGER } from './types'
 import { SERVICE_CONFIG } from '../config/types'
 
 export default class LoggerService implements Service {
-  public applicationInit(container: Container): void {
+  public async applicationInit(container: Container): Promise<void> {
     const config = container.resolve<VisionElixirConfig>(SERVICE_CONFIG).logging
     const logger = new VisionElixirLogger(config?.type, config)
 

@@ -39,6 +39,12 @@ declare module '../app/types' {
   }
 }
 
+declare module '../app/types' {
+  interface VisionElixirJobConfig {
+    database?: DatabaseConfig
+  }
+}
+
 export interface DatabaseConfig {
   connections: {
     [key: string]: DatabaseConnectionConfig

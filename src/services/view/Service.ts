@@ -7,12 +7,14 @@ import * as nunjucks from 'nunjucks'
 import { SERVICE_VIEW } from './types'
 
 export default class ViewService implements Service {
-  public applicationInit(container: Container): void {
+  public async applicationInit(container: Container): Promise<void> {
     container.singleton(SERVICE_VIEW, new VisionElixirView())
   }
 
-  public applicationBoot(container: Container): void {
-    const config = container.resolve<App>(SERVICE_APP).getConfig()
+  public async applicationBoot(container: Container): Promise<void> {
+    const config = container
+      .resolve<App>(SERVICE_APP)
+      .getConfig<VisionElixirConfig>()
 
     if (config.view) {
       const viewFallback = this.getViewFallback(config)

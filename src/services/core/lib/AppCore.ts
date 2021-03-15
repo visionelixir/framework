@@ -12,7 +12,7 @@ import { VisionElixirZoneEvents } from '../../zone/types'
 import { VisionElixirEvent } from '../../event/lib/VisionElixirEvent'
 import { Context, HttpStatus } from '../types'
 
-export class Core extends Koa {
+export class AppCore extends Koa {
   protected container: Container
   protected app: App
 
@@ -43,7 +43,7 @@ export class Core extends Koa {
       properties: { id, ctx, ...shared },
     })
 
-    let result
+    let result = null
 
     zone.run(async () => {
       const res = ctx.res
@@ -51,7 +51,7 @@ export class Core extends Koa {
       const onerror = (err: Error) => ctx.onerror(err)
       const handleResponse = () => respond(ctx)
       onFinished(res, onerror)
-      result = fnMiddleware(ctx).then(handleResponse).catch(onerror)
+      result = await fnMiddleware(ctx).then(handleResponse).catch(onerror)
     })
 
     return result
@@ -91,15 +91,18 @@ function respond(ctx: any) {
       ctx.response.remove('Transfer-Encoding')
       return res.end()
     }
+
     if (ctx.req.httpVersionMajor >= 2) {
       body = String(code)
     } else {
       body = ctx.message || String(code)
     }
+
     if (!res.headersSent) {
       ctx.type = 'text'
       ctx.length = Buffer.byteLength(body)
     }
+
     return res.end(body)
   }
 
@@ -110,8 +113,10 @@ function respond(ctx: any) {
 
   // body: json
   body = JSON.stringify(body)
+
   if (!res.headersSent) {
     ctx.length = Buffer.byteLength(body)
   }
+
   res.end(body)
 }

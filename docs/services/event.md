@@ -116,7 +116,7 @@ Emitter.emit('Some:event.name', new VisionElixirEvent({ key: 'value' }))
 When naming your events it's best to namespace them somehow so to not conflict with other events that might exist from other
 services or libraries. An example for that could be `{Project}:{Service}.{EventName}` such as `VisionElixir:App.ResponsePre`
 
-## Core Events
+## AppCore Events
 
 The VisionElixir core fires many events that you can use to hook into the core functionality. Two enums exist for these events
 to make it easier to access them. `VisionElixirLocalEvents` and `VisionElixirGlobalEvents`
@@ -128,6 +128,6 @@ All exported types are available at the root `@visionelixir/framework`
 - `Emitter` - Interface contract for an emitter
 - `Event` - Interface a for an event object. This gets set when the event is emitted and then received by the listener
 - `EventListener` - Typing for an EventListener
-- `VisionElixirLocalEvents` - see Core Events section above
-- `VisionElixirGlobalEvents` - see Core Events section above
+- `VisionElixirLocalEvents` - see AppCore Events section above
+- `VisionElixirGlobalEvents` - see AppCore Events section above
 - `SERVICE_EMITTER` - Constant for the registered container name

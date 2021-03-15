@@ -4,7 +4,7 @@ VisionElixir bases itself around the concept of services. Both the project and c
 A service should be created for an individual group of logic. An example of this is a library (Logger, Event Emitter,
 Database) or for a resource of a Rest API (Auth, Users, Orders) etc.
 
-## Core Services
+## AppCore Services
 The core consists of several generic services used in a typical project. These include:
 
 - App - The App Service is the service that a project runs within. It creates the application core, loads the 
@@ -12,7 +12,7 @@ The core consists of several generic services used in a typical project. These i
 - Collector - A service for collecting together metadata to display/record or whatever at a later date
 - Config - A helper to get data from the application configuration
 - Container - A simple service container which all services are resolved through
-- Core - The core of the application, this serves the app, orchestrates the middleware cycle for a 
+- AppCore - The core of the application, this serves the app, orchestrates the middleware cycle for a 
   request/response etc
 - Database - A way to integrate with databases (currently only PostgeSQL is supported)
 - Environment - A way to handle loading and using variables across different environments

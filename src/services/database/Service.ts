@@ -12,13 +12,13 @@ import { VisionElixirDatabase } from './lib/VisionElixirDatabase'
 import { App } from '../app/lib/App'
 
 export default class DatabaseService implements Service {
-  public applicationInit(container: Container): void {
+  public async applicationInit(container: Container): Promise<void> {
     const database = new VisionElixirDatabase()
 
     container.singleton(SERVICE_DATABASE, database)
   }
 
-  public applicationBoot(container: Container): void {
+  public async applicationBoot(container: Container): Promise<void> {
     const { app, database } = container.resolve<{
       app: App
       database: Database
@@ -29,6 +29,18 @@ export default class DatabaseService implements Service {
     if (databaseConfig) {
       DatabaseService.setupConnections(database, databaseConfig)
     } else {
+    }
+  }
+
+  public async applicationDown(container: Container): Promise<void> {
+    const database = container.resolve<Database>(SERVICE_DATABASE)
+
+    const databases = database.all()
+
+    for (const i in databases) {
+      const database = databases[i]
+
+      await database.disconnect()
     }
   }
 

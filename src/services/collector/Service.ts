@@ -15,7 +15,7 @@ export default class CollectorService implements Service {
    * Creates a collector for this request cycle
    * and adds it into the request container
    */
-  public init(container: Container): void {
+  public async init(container: Container): Promise<void> {
     container.singleton(SERVICE_COLLECTOR, new VisionElixirCollector())
   }
 

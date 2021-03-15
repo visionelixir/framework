@@ -1,11 +1,23 @@
-import { Service, VisionElixirConfig } from '../types'
+import { Service } from '../types'
 import * as Path from 'path'
 import { ZoneManager } from '../../zone/lib/VisionElixirZoneManager'
 import { Performance } from '../../performance/types'
 import { App } from './App'
 
+interface ServiceLoaderConfig {
+  baseDirectory: string
+  services: {
+    file: string
+    directory: string
+    require: {
+      project: string[]
+      visionElixir: string[]
+    }
+  }
+}
+
 export class VisionElixirLoader {
-  public static loadServiceObjects(config: VisionElixirConfig): Service[] {
+  public static loadServiceObjects(config: ServiceLoaderConfig): Service[] {
     const baseDirectory = config.baseDirectory
     const { directory, require, file } = config.services
     const servicePath = `${baseDirectory}/${directory}`

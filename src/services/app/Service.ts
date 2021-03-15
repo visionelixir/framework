@@ -1,10 +1,18 @@
-import { KeyValue, Service, SERVICE_APP } from './types'
+import {
+  AppType,
+  KeyValue,
+  Service,
+  SERVICE_APP,
+  VisionElixirConfig,
+  VisionElixirJobConfig,
+} from './types'
 import { Emitter, Event, VisionElixirApplicationEvents } from '../event/types'
 import { AppMiddleware } from './middleware/AppMiddleware'
 import { Container } from '../container/types'
 import { App } from './lib/App'
 import { VisionElixirZoneEvents } from '../zone/types'
 import { VisionElixirEvent } from '../event/lib/VisionElixirEvent'
+import { Middleware } from '../core/types'
 
 export default class AppService implements Service {
   public applicationRegisterEvents(
@@ -13,23 +21,32 @@ export default class AppService implements Service {
   ): void {
     const app = container.resolve<App>(SERVICE_APP)
 
-    const config: KeyValue = { ...app.getConfig() }
-    const path = `${config.baseDirectory}/${config.static.directory}`
-    delete config.static.directory
+    const config: VisionElixirConfig | VisionElixirJobConfig = {
+      ...app.getConfig(),
+    }
+
+    const appMiddleware: Middleware[] = [
+      AppMiddleware.initServices(),
+      AppMiddleware.bootServices(),
+      AppMiddleware.setupContext(),
+    ]
+
+    if (config.type === AppType.APP) {
+      const path = `${config.baseDirectory}/${config.static.directory}`
+
+      appMiddleware.push(
+        AppMiddleware.response(),
+        AppMiddleware.compress(),
+        AppMiddleware.serveStatic(path, config.static),
+        AppMiddleware.bodyParser(),
+      )
+    }
 
     emitter.on(
       VisionElixirApplicationEvents.INIT_MIDDLEWARE,
       (event: Event): void => {
         const { middleware } = event.getData()
-        middleware.push(
-          AppMiddleware.initServices(),
-          AppMiddleware.bootServices(),
-          AppMiddleware.response(),
-          AppMiddleware.compress(),
-          AppMiddleware.serveStatic(path, config.static),
-          AppMiddleware.bodyParser(),
-          AppMiddleware.setupContext(),
-        )
+        middleware.push(...appMiddleware)
       },
     )
 

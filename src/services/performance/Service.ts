@@ -9,13 +9,13 @@ import { NumberUtility } from '../../utilities/NumberUtility'
 import { App } from '../app/lib/App'
 
 export default class PerformanceService implements Service {
-  public applicationInit(container: Container): void {
+  public async applicationInit(container: Container): Promise<void> {
     const app = container.resolve<App>(SERVICE_APP)
 
     container.singleton(SERVICE_PERFORMANCE, app.getPerformance())
   }
 
-  public init(container: Container): void {
+  public async init(container: Container): Promise<void> {
     container.singleton(SERVICE_PERFORMANCE, new VisionElixirPerformance())
   }
 

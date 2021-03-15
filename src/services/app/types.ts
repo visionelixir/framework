@@ -7,6 +7,8 @@ export interface KeyValue {
 }
 
 export interface VisionElixirConfig {
+  type: AppType.APP
+
   name: string
   host: string
   port: number
@@ -26,22 +28,46 @@ export interface VisionElixirConfig {
     index?: string
   }
 
-  services: {
-    file: string
-    directory: string
-    require: {
-      project: string[]
-      visionElixir: string[]
-    }
+  services: ServicesConfig
+}
+
+export interface VisionElixirJobConfig {
+  type: AppType.JOB
+
+  name: string
+  debug: boolean
+
+  baseDirectory: string
+
+  output?: {
+    performance?: boolean
+  }
+
+  services: ServicesConfig
+}
+
+export interface ServicesConfig {
+  file: string
+  directory: string
+  require: {
+    project: string[]
+    visionElixir: string[]
   }
 }
 
 export interface Service {
-  applicationInit?: (container: Container) => void
-  applicationBoot?: (container: Container) => void
-  init?: (container: Container) => void
-  boot?: (container: Container) => void
+  applicationInit?: (container: Container) => Promise<void>
+  applicationBoot?: (container: Container) => Promise<void>
+  applicationDown?: (container: Container) => Promise<void>
+  init?: (container: Container) => Promise<void>
+  boot?: (container: Container) => Promise<void>
+  // @todo implement
   down?: (container: Container) => Promise<void>
 }
 
 export const SERVICE_APP = 'app'
+
+export enum AppType {
+  APP = 'app',
+  JOB = 'job',
+}
