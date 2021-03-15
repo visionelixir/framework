@@ -28,6 +28,11 @@ export enum VisionElixirRequestEvents {
   INIT_VARS = 'VE:Init:Vars',
 }
 
+export enum VisionElixirJobEvents {
+  JOB_PRE = 'VE:Job.Pre',
+  JOB_POST = 'VE:Job.Post',
+}
+
 export enum VisionElixirApplicationEvents {
   INIT_MIDDLEWARE = 'VE:Init:Middleware',
 }

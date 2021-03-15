@@ -40,6 +40,8 @@ export default class AppService implements Service {
         AppMiddleware.serveStatic(path, config.static),
         AppMiddleware.bodyParser(),
       )
+    } else {
+      appMiddleware.push(AppMiddleware.job())
     }
 
     emitter.on(

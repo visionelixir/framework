@@ -109,6 +109,11 @@ export class App {
       this.performance.stop('app:create')
     })
 
+    if (config.type === AppType.JOB) {
+      performance.stop('app:total-boot')
+      this.outputPerformance()
+    }
+
     return this
   }
 

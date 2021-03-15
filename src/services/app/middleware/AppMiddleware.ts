@@ -9,6 +9,7 @@ import { Container } from '../../container/types'
 import {
   Emitter,
   SERVICE_EMITTER,
+  VisionElixirJobEvents,
   VisionElixirRequestEvents,
 } from '../../event/types'
 import { VisionElixirEvent } from '../../event/lib/VisionElixirEvent'
@@ -131,6 +132,37 @@ export class AppMiddleware {
     })
 
     return bootServices
+  }
+
+  /**
+   * Job
+   *
+   * Fires events when a job starts and ends
+   */
+  public static job(): Middleware {
+    const job: Middleware = async (ctx, next) => {
+      const container: Container = VisionElixir.container()
+      const emitter = container.resolve<Emitter>(SERVICE_EMITTER)
+
+      // listen on the response finish event
+      emitter.emit(
+        VisionElixirJobEvents.JOB_PRE,
+        new VisionElixirEvent({ ctx }),
+      )
+
+      await next()
+
+      emitter.emit(
+        VisionElixirJobEvents.JOB_POST,
+        new VisionElixirEvent({ ctx }),
+      )
+    }
+
+    Reflect.defineProperty(job, 'name', {
+      value: 'AppMiddleware.job',
+    })
+
+    return job
   }
 
   /**
