@@ -131,11 +131,10 @@ export class Pg extends DatabaseConnection {
 
       return formatted as T[]
     } catch (error) {
-      throw new QueryError(
-        error.message,
-        { name, query, params, stack },
-        'QueryFailure',
-      )
+      throw new QueryError(error.message, {
+        name: 'QueryFailure',
+        payload: { name, query, params, stack },
+      })
     } finally {
       client.release()
     }

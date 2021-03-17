@@ -1,41 +1,48 @@
+import { PayloadErrorOptions } from '../types'
+
 const type = 'PayloadError'
 
-export class PayloadError<T> extends Error {
+export class PayloadError<T = null> extends Error {
   public type = type
-  public name = 'PayloadError'
-  public payload: T | null = null
+  public options: PayloadErrorOptions<T>
 
   constructor(
     message = 'Something went wrong, try again later',
-    payload: T | null = null,
-    name: string = type,
+    options?: PayloadErrorOptions<T>,
   ) {
     super(message)
+
+    this.options = {
+      name: type,
+      payload: null,
+      ...options,
+    }
 
     Error.captureStackTrace(this, this.constructor)
 
     this.message = message
-    this.name = name
-
-    this.payload = payload
   }
 
   public getPayload(): T | null {
-    return this.payload
+    return this.options.payload || null
   }
 
-  public setPayload(payload: T): PayloadError<T | null> {
-    this.payload = payload
+  public getOptions(): PayloadErrorOptions<T> | null {
+    return this.options
+  }
+
+  public setPayload(payload: T | null): PayloadError<T | null> {
+    this.options.payload = payload
 
     return this
   }
 
   public getName(): string {
-    return this.name
+    return this.options.name as string
   }
 
   public setName(name: string): PayloadError<T | null> {
-    this.name = name
+    this.options.name = name
 
     return this
   }
@@ -48,5 +55,13 @@ export class PayloadError<T> extends Error {
 
   public getType(): string {
     return this.type
+  }
+
+  public getMessage(): string {
+    return this.message
+  }
+
+  public getStack(): string {
+    return this.stack || ''
   }
 }

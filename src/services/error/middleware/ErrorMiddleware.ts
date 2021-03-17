@@ -24,7 +24,9 @@ export class ErrorMiddleware {
         }
 
         if (!(error instanceof PayloadError)) {
-          const err = new VisionElixirError(error.message, error)
+          const err = new VisionElixirError<{ error: Error }>(error.message, {
+            payload: { error },
+          })
           err.stack = error.stack
           error = err
         }
@@ -72,14 +74,13 @@ export class ErrorMiddleware {
     const logger = VisionElixir.service<Logger>(SERVICE_LOGGER)
 
     const { method, url } = ctx
-    const { type, name, message, payload } = error
 
-    logger.critical('Error', message, {
-      type,
-      name,
-      message,
-      payload,
-      stack: error.stack,
+    logger.critical('Error', error.getMessage(), {
+      type: error.getType(),
+      name: error.getName(),
+      message: error.getMessage(),
+      payload: error.getPayload(),
+      stack: error.getStack(),
       method,
       url,
     })

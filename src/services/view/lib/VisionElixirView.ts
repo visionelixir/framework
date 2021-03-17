@@ -19,7 +19,10 @@ export class VisionElixirView implements View {
     try {
       render = nunjucks.render(template, payload)
     } catch (e) {
-      new ViewError(e.message, e, 'renderError')
+      throw new ViewError(e.message, {
+        name: 'RenderError',
+        payload: { error: e },
+      })
     }
 
     return render

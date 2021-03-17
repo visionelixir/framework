@@ -1,15 +1,14 @@
 import { VisionElixirError } from '../../error/errors/VisionElixirError'
+import { VisionElixirErrorOptions } from '../../error/types'
 
 const type = 'ContainerManagerError'
 
 export class ContainerManagerError<T> extends VisionElixirError<T> {
   constructor(
     message = 'A container manager error occurred',
-    payload: T | null = null,
-    name: string = type,
+    options?: VisionElixirErrorOptions<T>,
   ) {
-    super(message, payload, name)
+    super(message, options)
     this.type = type
-    this.name = name
   }
 }
