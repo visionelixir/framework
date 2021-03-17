@@ -1,6 +1,7 @@
 import { PayloadError } from './PayloadError'
 import { VisionElixirErrorOptions } from '../types'
 import { HttpStatus } from '../../core/types'
+import { KeyValue } from '../../app/types'
 
 const type = 'ElixirError'
 
@@ -17,6 +18,7 @@ export class VisionElixirError<T> extends PayloadError<T> {
       this.options = {
         passThrough: false,
         passThroughMessage: undefined,
+        passThroughPayload: {},
         ...options,
       }
     } else {
@@ -52,6 +54,10 @@ export class VisionElixirError<T> extends PayloadError<T> {
 
   public getPassThroughMessage(): string | undefined {
     return this.options.passThroughMessage
+  }
+
+  public getPassThroughPayload(): KeyValue | undefined {
+    return this.options.passThroughPayload
   }
 
   public setPassThroughMessage(value: string): VisionElixirError<T> {

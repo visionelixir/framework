@@ -2,7 +2,7 @@ import { PayloadErrorOptions } from '../types'
 
 const type = 'PayloadError'
 
-export class PayloadError<T = null> extends Error {
+export class PayloadError<T> extends Error {
   public type = type
   public options: PayloadErrorOptions<T>
 
