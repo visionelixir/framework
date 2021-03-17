@@ -17,18 +17,15 @@ export class ErrorMiddleware {
         ctx.error = null
         await next()
       } catch (error) {
-        const { status } = ctx
-
-        if (!String(status).startsWith('5')) {
-          ctx.status = HttpStatus.INTERNAL_SERVER_ERROR
-        }
-
         if (!(error instanceof PayloadError)) {
-          const err = new VisionElixirError<{ error: Error }>(error.message, {
-            payload: { error },
-          })
-          err.stack = error.stack
-          error = err
+          const visionElixirError = new VisionElixirError<{ error: Error }>(
+            error.message,
+            {
+              payload: { error },
+            },
+          )
+          visionElixirError.stack = error.stack
+          error = visionElixirError
         }
 
         ctx.error = error
@@ -36,8 +33,28 @@ export class ErrorMiddleware {
         this.log(error, ctx)
       }
 
-      const { status } = ctx
-      await this.emitEvent(status, ctx.error, ctx)
+      if (ctx.error && ctx.status === HttpStatus.NOT_FOUND) {
+        ctx.status = ctx.error.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR
+      }
+
+      if (
+        !ctx.error &&
+        ctx.body === undefined &&
+        (ctx.status === undefined || ctx.status === HttpStatus.NOT_FOUND)
+      ) {
+        ctx.error = new VisionElixirError('Not found', {
+          passThrough: true,
+          status: HttpStatus.NOT_FOUND,
+        })
+      }
+
+      if (
+        ctx.status !== undefined &&
+        !String(ctx.status).startsWith('2') &&
+        !String(ctx.status).startsWith('3')
+      ) {
+        await this.emitEvent(ctx.status, ctx.error, ctx)
+      }
     }
 
     Reflect.defineProperty(errorHandler, 'name', {
@@ -54,20 +71,14 @@ export class ErrorMiddleware {
   ): Promise<void> {
     const emitter = VisionElixir.service<Emitter>(SERVICE_EMITTER)
 
-    if (
-      status !== undefined &&
-      !String(status).startsWith('2') &&
-      !String(status).startsWith('3')
-    ) {
-      await emitter.emit(
-        VisionElixirRequestEvents.RESPONSE_ERROR,
-        new VisionElixirEvent({
-          status,
-          error,
-          ctx,
-        }),
-      )
-    }
+    await emitter.emit(
+      VisionElixirRequestEvents.RESPONSE_ERROR,
+      new VisionElixirEvent({
+        status,
+        error,
+        ctx,
+      }),
+    )
   }
 
   protected static log(error: PayloadError<Error>, ctx: Context): void {

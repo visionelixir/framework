@@ -3,7 +3,7 @@ import { VisionElixirErrorOptions } from '../types'
 import { HttpStatus } from '../../core/types'
 import { KeyValue } from '../../app/types'
 
-const type = 'ElixirError'
+const type = 'VisionElixirError'
 
 export class VisionElixirError<T> extends PayloadError<T> {
   public options: VisionElixirErrorOptions<T>
