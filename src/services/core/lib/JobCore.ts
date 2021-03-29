@@ -8,16 +8,20 @@ import { Emitter, SERVICE_EMITTER } from '../../event/types'
 import { Container } from '../../container/types'
 import * as compose from 'koa-compose'
 import { App } from '../../app/lib/App'
+import { VisionElixirZone } from '../../zone/lib/VisionElixirZone'
 
 export class JobCore {
   protected container: Container
   protected app: App
   protected middleware: Middleware[]
+  protected zone: VisionElixirZone
 
   constructor(options: { container: Container; app: App }) {
     this.container = options.container
     this.app = options.app
     this.middleware = []
+
+    this.zone = ZoneManager.getCurrentZone()
   }
 
   public use(fn: Middleware): JobCore {
@@ -40,7 +44,7 @@ export class JobCore {
       new VisionElixirEvent(configuredZoneProperties),
     )
 
-    const zone = ZoneManager.getCurrentZone().fork({
+    const zone = this.zone.fork({
       properties: { id, ctx, ...configuredZoneProperties },
     })
 
