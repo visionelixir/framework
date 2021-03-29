@@ -20,13 +20,11 @@ export default class EventsService implements Service {
       SERVICE_APP,
       SERVICE_EMITTER,
     )
-    const serviceObjects: Service[] = app.getServiceObjects()
 
-    serviceObjects.forEach((service: Service) => {
-      if (service.applicationRegisterEvents) {
-        service.applicationRegisterEvents(emitter, container)
-      }
-    })
+    await app.runServicesMethod('applicationRegisterEvents', [
+      emitter,
+      container,
+    ])
   }
 
   public async init(container: Container): Promise<void> {

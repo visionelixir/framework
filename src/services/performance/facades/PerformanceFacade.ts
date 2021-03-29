@@ -1,4 +1,4 @@
-import { VisionElixirFacade } from '../../app/lib/VisionElixirFacade'
+import { VisionElixirFacade } from '../../app/facades/VisionElixirFacade'
 import { Performance, SERVICE_PERFORMANCE } from '../types'
 
 export const PerformanceFacade = VisionElixirFacade<Performance>(

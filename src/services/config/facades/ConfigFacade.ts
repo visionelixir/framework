@@ -1,4 +1,4 @@
-import { VisionElixirFacade } from '../../app/lib/VisionElixirFacade'
+import { VisionElixirFacade } from '../../app/facades/VisionElixirFacade'
 import { VisionElixirConfig } from '../../app/types'
 import { SERVICE_CONFIG } from '../types'
 

@@ -30,13 +30,7 @@ export default class RouterService implements Service {
       SERVICE_ROUTER,
     )
 
-    const serviceObjects: Service[] = app.getServiceObjects()
-
-    serviceObjects.forEach((service: Service) => {
-      if (service.registerRoutes) {
-        service.registerRoutes(router, container)
-      }
-    })
+    await app.runServicesMethod('registerRoutes', [router, container])
 
     this.attachRoutes(router)
   }

@@ -1,4 +1,4 @@
-import { VisionElixirFacade } from '../lib/VisionElixirFacade'
+import { VisionElixirFacade } from './VisionElixirFacade'
 import { SERVICE_APP } from '../types'
 import { App } from '../lib/App'
 

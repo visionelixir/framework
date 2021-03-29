@@ -16,7 +16,7 @@ export interface VisionElixirConfig {
   baseDirectory: string
 
   output?: {
-    performance?: boolean
+    bootPerformance?: boolean
   }
 
   static: {
@@ -39,7 +39,7 @@ export interface VisionElixirJobConfig {
   baseDirectory: string
 
   output?: {
-    performance?: boolean
+    bootPerformance?: boolean
   }
 
   services: ServicesConfig

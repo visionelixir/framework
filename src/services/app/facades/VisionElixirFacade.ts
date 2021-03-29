@@ -1,4 +1,4 @@
-import { VisionElixir } from './VisionElixir'
+import { VisionElixir } from '../lib/VisionElixir'
 
 export const VisionElixirFacade = <T>(containerName: string): T => {
   return (new Proxy(this, {

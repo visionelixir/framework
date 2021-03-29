@@ -11,16 +11,19 @@ import { KeyValue } from '../../app/types'
 import { VisionElixirZoneEvents } from '../../zone/types'
 import { VisionElixirEvent } from '../../event/lib/VisionElixirEvent'
 import { Context, HttpStatus } from '../types'
+import { VisionElixirZone } from '../../zone/lib/VisionElixirZone'
 
 export class AppCore extends Koa {
   protected container: Container
   protected app: App
+  protected zone: VisionElixirZone
 
   constructor(options: { container: Container; app: App }) {
     super()
 
     this.container = options.container
     this.app = options.app
+    this.zone = ZoneManager.getCurrentZone()
   }
 
   public handleRequest(
@@ -39,7 +42,7 @@ export class AppCore extends Koa {
       new VisionElixirEvent(shared),
     )
 
-    const zone = ZoneManager.getCurrentZone().fork({
+    const zone = this.zone.fork({
       properties: { id, ctx, ...shared },
     })
 

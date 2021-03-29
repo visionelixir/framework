@@ -50,14 +50,8 @@ export class App {
    *
    * Instantiate an application. If a config is passed then create the application
    */
-  public constructor(config?: VisionElixirConfig | VisionElixirJobConfig) {
+  public constructor() {
     this.performance = new VisionElixirPerformance()
-
-    this.performance.start('app:total-boot')
-
-    if (config) {
-      this.create(config)
-    }
   }
 
   /**
@@ -65,7 +59,10 @@ export class App {
    *
    * Orchestrates the creation of the app
    */
-  public create(config: VisionElixirConfig | VisionElixirJobConfig): App {
+  public async create(
+    config: VisionElixirConfig | VisionElixirJobConfig,
+  ): Promise<App> {
+    this.performance.start('app:total-boot')
     const performance = this.getPerformance()
 
     performance.start('app:create.application-container')
@@ -74,7 +71,7 @@ export class App {
 
     const zone = this.createAppZone()
 
-    zone.run(async () => {
+    await zone.run(async () => {
       performance.start('app:create')
       this.config = config
 
@@ -82,12 +79,16 @@ export class App {
       this.loadEnvironment()
       performance.stop('app:create.load-environment')
 
+      performance.start('app:create.create-core')
+      this.createCore()
+      performance.stop('app:create.create-core')
+
       performance.start('app:create.load-services')
-      this.loadServices()
+      await this.loadServices()
       performance.stop('app:create.load-services')
 
       performance.start('app:create.init-application-services')
-      this.initApplicationServices()
+      await this.initApplicationServices()
       performance.stop('app:create.init-application-services')
 
       performance.start('app:create.set-logger')
@@ -95,12 +96,8 @@ export class App {
       performance.stop('app:create.set-logger')
 
       performance.start('app:create.boot-application-services')
-      this.bootApplicationServices()
+      await this.bootApplicationServices()
       performance.stop('app:create.boot-application-services')
-
-      performance.start('app:create.create-core')
-      this.createCore()
-      performance.stop('app:create.create-core')
 
       performance.start('app:create.configure-middleware')
       this.configureMiddleware()
@@ -280,7 +277,7 @@ export class App {
    *
    * Call the loader to load all the services
    */
-  protected loadServices(): App {
+  protected async loadServices(): Promise<App> {
     this.serviceObjects = VisionElixirLoader.loadServiceObjects(
       this.getConfig(),
     )
@@ -291,19 +288,38 @@ export class App {
     return this
   }
 
+  public async runServicesMethod(
+    methodName: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    args: any[],
+  ): Promise<App> {
+    for (const i in this.serviceObjects) {
+      const service: Service = this.serviceObjects[i]
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const method = (service as any)[methodName]
+
+      if (method) {
+        // preserve lexical scope to the service
+        method.bind(service)
+
+        if (method.constructor.name === 'AsyncFunction') {
+          await method.bind(service)(...args)
+        } else {
+          method(...args)
+        }
+      }
+    }
+
+    return this
+  }
+
   /**
    * Init Application Level Services
    *
    * Call the application init method on each registered service
    */
-  protected initApplicationServices(): App {
-    this.serviceObjects.forEach((service: Service) => {
-      if (service.applicationInit) {
-        service.applicationInit(this.container)
-      }
-    })
-
-    return this
+  protected async initApplicationServices(): Promise<App> {
+    return this.runServicesMethod('applicationInit', [this.getContainer()])
   }
 
   /**
@@ -311,14 +327,8 @@ export class App {
    *
    * Call the application boot method on each registered service
    */
-  protected bootApplicationServices(): App {
-    this.serviceObjects.forEach((service: Service) => {
-      if (service.applicationBoot) {
-        service.applicationBoot(this.container)
-      }
-    })
-
-    return this
+  protected async bootApplicationServices(): Promise<App> {
+    return this.runServicesMethod('applicationBoot', [this.getContainer()])
   }
 
   /**
@@ -399,7 +409,7 @@ export class App {
 
     if (
       this.getConfig<VisionElixirConfig | VisionElixirJobConfig>().output
-        ?.performance
+        ?.bootPerformance
     ) {
       this.outputPerformance()
     }

@@ -11,7 +11,7 @@ export class ZoneManager {
           ZoneManager.set(id, ZoneManager.get(parentId))
         },
         destroy: (id: string | number) => {
-          ZoneManager.delete(id)
+          ZoneManager.destroy(id)
         },
       })
       .enable()
@@ -36,7 +36,7 @@ export class ZoneManager {
     return ZoneManager.zones.get(id)
   }
 
-  public static delete(id: string | number): ZoneManager {
+  public static destroy(id: string | number): ZoneManager {
     ZoneManager.zones.delete(id)
 
     return ZoneManager

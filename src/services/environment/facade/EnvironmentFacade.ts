@@ -1,4 +1,4 @@
-import { VisionElixirFacade } from '../../app/lib/VisionElixirFacade'
+import { VisionElixirFacade } from '../../app/facades/VisionElixirFacade'
 import { Environment } from '../lib/Environment'
 import { SERVICE_ENVIRONMENT } from '../types'
 

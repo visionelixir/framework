@@ -1,4 +1,4 @@
-import { VisionElixirFacade } from '../../app/lib/VisionElixirFacade'
+import { VisionElixirFacade } from '../../app/facades/VisionElixirFacade'
 import { SERVICE_ZONE } from '../types'
 import { ZoneManager } from '../lib/VisionElixirZoneManager'
 
