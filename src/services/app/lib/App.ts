@@ -108,7 +108,13 @@ export class App {
 
     if (config.type === AppType.JOB) {
       performance.stop('app:total-boot')
-      this.outputPerformance()
+
+      if (
+        this.getConfig<VisionElixirConfig | VisionElixirJobConfig>().output
+          ?.bootPerformance
+      ) {
+        this.outputPerformance()
+      }
     }
 
     return this
@@ -459,7 +465,12 @@ export class App {
       environment: Environment.which(),
     })
 
-    this.outputPerformance()
+    if (
+      this.getConfig<VisionElixirConfig | VisionElixirJobConfig>().output
+        ?.bootPerformance
+    ) {
+      this.outputPerformance()
+    }
 
     return this
   }
