@@ -100,7 +100,7 @@ export class App {
       performance.stop('app:create.boot-application-services')
 
       performance.start('app:create.configure-middleware')
-      this.configureMiddleware()
+      await this.configureMiddleware()
       performance.stop('app:create.configure-middleware')
 
       this.performance.stop('app:create')
@@ -369,10 +369,15 @@ export class App {
    * Creates the middleware stack and allows services to add into it,
    * then registers the middleware into the core to be used
    */
-  protected configureMiddleware(): App {
+  protected async configureMiddleware(): Promise<App> {
     const coreMiddlewareStack: Middleware[] = []
 
     this.emitter = this.container.resolve<Emitter>(SERVICE_EMITTER)
+
+    await this.runServicesMethod('middleware', [
+      coreMiddlewareStack,
+      this.getContainer(),
+    ])
 
     this.emitter.emit(
       VisionElixirApplicationEvents.INIT_MIDDLEWARE,

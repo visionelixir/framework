@@ -1,4 +1,5 @@
 import { Container } from '../container/types'
+import { Middleware } from '../core/types'
 
 export interface KeyValue {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -60,7 +61,8 @@ export interface Service {
   applicationDown?: (container: Container) => Promise<void>
   init?: (container: Container) => Promise<void>
   boot?: (container: Container) => Promise<void>
-  // @todo implement
+  middleware?: (middleware: Middleware[], container: Container) => Promise<void>
+  // @todo implement down
   down?: (container: Container) => Promise<void>
 }
 

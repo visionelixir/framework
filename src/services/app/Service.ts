@@ -6,7 +6,7 @@ import {
   VisionElixirConfig,
   VisionElixirJobConfig,
 } from './types'
-import { Emitter, Event, VisionElixirApplicationEvents } from '../event/types'
+import { Emitter } from '../event/types'
 import { AppMiddleware } from './middleware/AppMiddleware'
 import { Container } from '../container/types'
 import { App } from './lib/App'
@@ -15,10 +15,10 @@ import { VisionElixirEvent } from '../event/lib/VisionElixirEvent'
 import { Middleware } from '../core/types'
 
 export default class AppService implements Service {
-  public applicationRegisterEvents(
-    emitter: Emitter,
+  public async middleware(
+    middleware: Middleware[],
     container: Container,
-  ): void {
+  ): Promise<void> {
     const app = container.resolve<App>(SERVICE_APP)
 
     const config: VisionElixirConfig | VisionElixirJobConfig = {
@@ -44,13 +44,14 @@ export default class AppService implements Service {
       appMiddleware.push(AppMiddleware.job())
     }
 
-    emitter.on(
-      VisionElixirApplicationEvents.INIT_MIDDLEWARE,
-      (event: Event): void => {
-        const { middleware } = event.getData()
-        middleware.push(...appMiddleware)
-      },
-    )
+    middleware.push(...appMiddleware)
+  }
+
+  public applicationRegisterEvents(
+    emitter: Emitter,
+    container: Container,
+  ): void {
+    const app = container.resolve<App>(SERVICE_APP)
 
     emitter.on(
       VisionElixirZoneEvents.ZONE_SETUP,
