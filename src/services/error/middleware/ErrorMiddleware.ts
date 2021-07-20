@@ -30,6 +30,10 @@ export class ErrorMiddleware {
 
         ctx.error = error
 
+        if (!ctx.status && error.options.status) {
+          ctx.status = error.options.status
+        }
+
         this.log(error, ctx)
       }
 
