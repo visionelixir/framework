@@ -58,8 +58,9 @@ export interface DatabaseConnectionConfig {
   user: string
   password: string
   port: number
-  ssl: any;
-  application_name: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ssl: any
+  application_name: string
 }
 
 export const DEFAULT_CONNECTION = 'default'
