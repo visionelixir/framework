@@ -2,7 +2,7 @@ import { Service, SERVICE_APP } from '../app/types'
 import { Container } from '../container/types'
 import { VisionElixirEmitter } from './lib/VisionElixirEmitter'
 import { App } from '../app/lib/App'
-import { Emitter, SERVICE_EMITTER } from './types'
+import { Emitter, SERVICE_EMITTER, VisionElixirRequestEvents } from './types'
 import { VisionElixir } from '../app/lib/VisionElixir'
 
 // @todo add a list of all core events and what they are/can be used for to the event docs
@@ -28,7 +28,15 @@ export default class EventsService implements Service {
   }
 
   public async init(container: Container): Promise<void> {
-    const emitter = new VisionElixirEmitter()
+    let emitter: VisionElixirEmitter | null = new VisionElixirEmitter()
+
+    emitter.on(VisionElixirRequestEvents.RESPONSE_DESTROY, () => {
+      emitter?.getNames().forEach((name) => {
+        emitter?.removeAllListeners(name)
+      })
+
+      emitter = null
+    })
 
     container.singleton(SERVICE_EMITTER, emitter)
   }

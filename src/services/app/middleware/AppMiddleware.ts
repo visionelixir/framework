@@ -181,6 +181,11 @@ export class AppMiddleware {
           VisionElixirRequestEvents.RESPONSE_POST,
           new VisionElixirEvent({ ctx }),
         )
+
+        emitter.emit(
+          VisionElixirRequestEvents.RESPONSE_DESTROY,
+          new VisionElixirEvent({ ctx }),
+        )
       })
 
       emitter.emit(

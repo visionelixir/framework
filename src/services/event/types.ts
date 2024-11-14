@@ -26,6 +26,7 @@ export enum VisionElixirRequestEvents {
   RESPONSE_PRE = 'VE:Response:Pre',
   RESPONSE_POST = 'VE:Response:Post',
   RESPONSE_ERROR = 'VE:Response:Error',
+  RESPONSE_DESTROY = 'VE:Response:Destroy',
   APP_DATA = 'VE:Data',
   INIT_VARS = 'VE:Init:Vars',
 }
