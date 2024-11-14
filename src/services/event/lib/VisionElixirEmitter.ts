@@ -45,4 +45,17 @@ export class VisionElixirEmitter implements Emitter {
 
     return this
   }
+
+  public once(event: string, callback: EventListener): VisionElixirEmitter {
+    this.emitter.once(event, callback)
+    return this
+  }
+
+  public removeListener(
+    event: string,
+    callback: EventListener,
+  ): VisionElixirEmitter {
+    this.emitter.removeListener(event, callback)
+    return this
+  }
 }
