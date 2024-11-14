@@ -5,6 +5,8 @@ export interface Emitter {
   off: (event: string, callback: EventListener) => Emitter
   getListeners: (event: string) => EventListener[]
   emit: (eventName: string, eventInstance: Event) => Emitter
+  once: (event: string, callback: EventListener) => Emitter
+  removeAllListeners: (event?: string | symbol) => Emitter
 }
 
 export interface Event {
